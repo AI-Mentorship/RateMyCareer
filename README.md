@@ -9,9 +9,7 @@ RateMyCareer is an AI-driven, human-centered career platform that leverages Redd
 
 ## Features
 - **Sentiment Aggregator & Trend Predictor:** Scrape career-related subreddits to gather posts and comments, analyze their sentiment, and track sentiment trends over time per career field; predict near-future sentiment using time-series models.
-- **Career Sentiment & Regret Dashboard:** Visualize historical emotional sentiment, frequency of regret-related posts, and confidence metrics for various professions
-- **Top Movers List:** Identify careers with rapidly improving or declining emotional sentiment, measured by an “emotional volatility index”
-- **Final Vibe Score:** Calculate a composite “vibe score” rating (0–5 stars) for each career field, integrating normalized sentiment, regret frequency, and volatility measures
+- **Vibe Score & Breakdown:** Calculate a composite “vibe score” rating for each career profession, integrating normalized sentiment, regret frequency, and volatility measure. The app will also feature a breakdown of the aforementioned metrics to the user.
 - **AI-Generated Career Summaries:** Use large language models (LLMs) with clustering techniques to generate concise, human-readable summaries that describe what life is like in each profession, highlighting common themes, challenges, and required traits
 
 ## Project Team
