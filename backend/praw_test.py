@@ -2,16 +2,20 @@
 # this is here now only for testing and progression purposes.
 #The "chopped_chin" csv file is an test.
 
+import os
 import pandas as pd
 import numpy as np
 import praw
 import nltk
 from nltk.sentiment.vader import SentimentIntensityAnalyzer as SIA
+from dotenv import load_dotenv
+
+load_dotenv()
 
 user_agent = "Praw Test 1.0 by /u/Odd_Interaction5417"
 reddit = praw.Reddit(
-    client_id="zY-ILX9sWXY30v13HTu5gA",
-    client_secret="dXYmApEGGlawyCWIySd-ZR01TWNhZw",
+    client_id=os.getenv("CLIENT_ID"),
+    client_secret=os.getenv("CLIENT_SECRET"),
     user_agent = user_agent
 )
 
@@ -40,4 +44,4 @@ df.loc[df['compound'] < -0.2, 'label'] = -1
 df.head()
 
 df2 = df[['headlines', 'label']]
-df2.to_csv('chopped_chin.csv', encoding='utf-8', index=False)
+#df2.to_csv('chopped_chin.csv', encoding='utf-8', index=False)
