@@ -1,0 +1,76 @@
+.compare-container {
+    display: flex;
+    flex-direction: column;
+    margin-left: 50px;
+}
+
+.frame{
+    margin-top: -100px;
+    margin-left: 10px;
+    z-index:1;
+}
+
+.job1 {
+    height: 140px;
+}
+
+.job2 {
+    height: 120px;
+    margin-left: -63px;
+}
+
+.job3 {
+    height: 120px;
+    margin-left: -58px;
+}
+
+.job4 {
+    height: 115px;
+    margin-left: -60px;
+}
+
+.job5 {
+    height: 115px;
+    margin-left: -28px;
+}
+
+.compare-main {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin-top: -4px;
+    height: 210px;
+    width: 450px;
+    background-color: white;
+    border-radius: 40px;
+}
+
+h2 {
+    font-family: 'Itim', cursive;
+}
+
+.compare-main p {
+    margin-top: -18px;
+}
+
+.comparison {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+.compare {
+    margin-top: 10px;
+    margin-left: 25px;
+    height: 38px;
+    width: 400px;
+    background-color: blue;
+    color: white;
+    font-family: 'Itim', cursive;
+    border-radius: 30px;
+    border: 0px solid white;
+    ;
+
+}
