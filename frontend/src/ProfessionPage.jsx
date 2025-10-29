@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useNavigate } from 'react-router-dom'; 
+import Select from "react-select";
 import './ProfessionPage.css';
 
 function ProfessionPage() {
@@ -13,43 +14,50 @@ function ProfessionPage() {
   
   // List of available professions
   const professions = [
-    'Data Analyst',
-    'Data Scientist',
-    'HR / Management',
-    'Physical Therapist',
-    'Teacher',
-    'Lawyer',
-    'Police',
-    'UX Designer',
-    'Software Engineer',
-    'Nurse',
-    'Accountant',
-  ];
+  { value: "data-scientist", label: "Data Scientist" },
+  { value: "hr-management", label: "HR / Management" },
+  { value: "physical-therapist", label: "Physical Therapist" },
+  { value: "teacher", label: "Teacher" },
+  { value: "lawyer", label: "Lawyer" },
+  { value: "police", label: "Police" },
+  { value: "ux", label: "UX" },
+  { value: "data-analyst", label: "Data Analyst" },
+  { value: "nursing", label: "Nursing"},
+];
   
-  // This is to filter professions based on search query
-  const filteredProfessions = professions.filter(profession =>
-    profession.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-  
-  // Show selection of the professions we have
-  const handleSelectProfession = (profession) => {
-    const professionSlug = profession.toLowerCase().replace(/\s+/g, '-').replace(/\//g, '-');
-    navigate(`/profession/${professionSlug}`);
-    setSearchQuery('');
-    setIsDropdownOpen(false);
-  };
+// react-select
+const customStyles = {
+  placeholder: (provided) => ({
+    ...provided,
+    fontFamily: "'Itim', cursive",
+  }),
+  control: (provided) => ({
+    ...provided,
+    border: 'none',
+    boxShadow: 'none',
+    backgroundColor: 'transparent',
+    fontFamily: "'Itim', cursive",
+  }),
+  valueContainer: (provided) => ({
+    ...provided,
+    paddingLeft: '20px', 
+  }),
+  indicatorSeparator: () => ({ display: 'none' }),
+  dropdownIndicator: () => ({ display: 'none' }),
+  menu: (provided) => ({
+    ...provided,
+    width: '100%',
+    fontFamily: "'Itim', cursive",
+  }),
+};
 
-  // Close dropdown when clicking outside
-  useEffect(() => {
-  const handleClickOutside = (event) => {
-    if (!event.target.closest('.hero-search-container')) {
-      setIsDropdownOpen(false);
-    }
-  };
-  
-  document.addEventListener('mousedown', handleClickOutside);
-  return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+
+// Handle profession selection
+const handleSelectProfession = (selectedOption) => {
+  if (selectedOption) {
+    navigate(`/profession/${selectedOption.value}`);
+  }
+};
 
   // 1. Hard coded data for now
   // 2.  Will later replace with API call to fetch real data
@@ -89,41 +97,16 @@ function ProfessionPage() {
             </div>
           </div>
     
-    { /* Search bar dropdown */ }
-    <div className="hero-search-container">
-      <div className="search-wrapper">
-        <input
-          type="text"
-          className="search-input"
-          placeholder="Select a profession..."
-          value={searchQuery}
-          onChange={(e) => {
-            setSearchQuery(e.target.value);
-            setIsDropdownOpen(true);
-          }}
-          onFocus={() => setIsDropdownOpen(true)}
-        />
-        <button className="search-button">SEARCH</button>
-      </div>
-      
-      {/* Dropdown menu part (to show professions) */}
-      {isDropdownOpen && (
-        <div className="dropdown-menu">
-          {filteredProfessions.length > 0 ? (
-            filteredProfessions.map((profession, index) => (
-              <div
-                key={index}
-                className="dropdown-item"
-                onClick={() => handleSelectProfession(profession)}
-              >
-                {profession}
-              </div>
-            ))
-          ) : (
-            <div className="dropdown-item no-results">No professions found</div>
-          )}
-        </div>
-      )}
+    {/* Search bar dropdown */ }
+    <div className="search-container">
+      <Select
+      className="select-component"
+      options={professions}
+      styles={customStyles}
+      placeholder="Select a profession..."
+      onChange={handleSelectProfession}
+      />
+      <button className="search-button">SEARCH</button>
     </div>
   </div>
 </div> 
