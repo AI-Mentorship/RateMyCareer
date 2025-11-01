@@ -1,0 +1,91 @@
+ @import url("https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;800;900&display=swap");
+
+
+.quote-container {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 800px;
+    position: relative;
+}
+
+.quote-container h1{
+    font-family: "Bangers", cursive;
+    margin: 0;
+    font-size: 50px;
+}
+
+.slideBar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    width: 100%;
+}
+
+.leftArrow{
+    font-size: 120px;
+    position: absolute;
+    top: 5px;
+    left: -130px;
+    cursor: pointer;
+}
+
+.leftArrow:hover {
+    color: rgb(112, 111, 111);
+}
+
+.rightArrow{
+    font-size: 120px;
+    position: absolute;
+    top: 5px;
+    right: -130px;
+    cursor: pointer;
+}
+
+.rightArrow:hover {
+    color: rgb(112, 111, 111);
+}
+
+.slideBar p{
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    overflow: hidden;
+    width: 100%;
+}
+ 
+.slideRight {
+    opacity: 0;
+    transform: translateX(10%);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.initialLeft {
+    transform: translateX(-10%);
+    opacity: 0;
+}
+
+.replaceLeft {
+    opacity: 1;
+    transform: translateX(0%);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.slideLeft {
+    opacity: 0;
+    transform: translateX(-10%);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.initialRight {
+    transform: translateX(10%);
+    opacity: 0;
+}
+
+.replaceRight {
+    opacity: 1;
+    transform: translateX(0%);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}

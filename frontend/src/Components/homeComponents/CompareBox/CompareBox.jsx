@@ -1,10 +1,5 @@
 import './CompareBox.css'
 import Select from 'react-select'
-import job1 from '../../assets/job1.png'
-import job2 from '../../assets/job2.png'
-import job3 from '../../assets/job3.png'
-import job4 from '../../assets/job4.png'
-import job5 from '../../assets/job5.png'
 
 function CompareBox() {
     const options = [
@@ -23,15 +18,18 @@ function CompareBox() {
     const customStyles = {
         placeholder: (provided) => ({
             ...provided,
-            fontFamily: "'Itim', cursive",
+            fontFamily: "Arial, Helvetica, sans-serif;",    
+            textAlign: "left",
         }),
         control: (provided) => ({
             ...provided,
             borderRadius: "30px",
-            backgroundColor: "#D9D9D9",
-            fontFamily: "'Itim', cursive",
-            width: "195px",
-            fontSize: "13px",
+            backgroundColor: "white",
+            width: "400px",
+            fontSize: "15px",
+            boxShadow: "0 10px 30px rgba(0, 0, 0, 0.2)",
+            textAlign: "left",
+            fontFamily: "Arial, Helvetica, sans-serif;", 
         }),
         valueContainer: (provided) => ({
             ...provided,
@@ -41,31 +39,27 @@ function CompareBox() {
         dropdownIndicator: () => ({ display: 'none' }),
         menu: (provided) => ({
             ...provided,
-            width: '195px',
-            fontFamily: "'Itim', cursive",
-            fontSize: "13px",
+            width: '400px',
+            fontFamily: "Arial, Helvetica, sans-serif;",
+            fontSize: "15px",
+            textAlign: "left",
         }),
     };
 
     return (
         <div className="compare-container">
-            <div className="frame">
-                <img className="job1" src={job1}></img>
-                <img className="job2" src={job2}></img>
-                <img className="job3" src={job3}></img>
-                <img className="job4" src={job4}></img>
-                <img className="job5" src={job5}></img>
-            </div>
             <div className="compare-main">
                 <h2>Compare</h2>
-                <p>Wanna know detailed comparisons between 2 Professions</p>
+                <p>"Wanna know detailed comparisons between 2 Professions."</p>
                 <div className="comparison">
+                    <h4 className="first-prof">FIRST PROFESSION</h4>
                     <Select
                         className="select-box1"
                         options={options}
                         styles={customStyles}
                         placeholder="Select a profession..."
                     />
+                    <h4 className="second-prof">SECOND PROFESSION</h4>
                     <Select
                         className="select-box2"
                         options={options}

@@ -1,0 +1,152 @@
+@import url("https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;800;900&display=swap");
+
+.searchbox {
+    display: flex;
+    flex-direction: column;
+    width: 580px;
+    margin-top: -60px;
+    padding-right: 40px;
+}
+
+h1 {
+    font-size: 110px;
+    font-family: 'Bangers', cursive;
+    color: white;
+}
+
+.intro {
+    font-size: 15px;
+    font-family: 'Inter', sans-serif;
+    color: black;
+    font-weight: 700;
+    margin-top: -80px;
+    text-align: center;
+    color: white;
+}
+
+.search-container {
+    display: flex;
+    flex-direction: row;
+    background-color: white;
+    border-radius: 40px;
+    justify-content: space-between;
+}
+
+.select-coponent {
+    border: none;
+    box-shadow: none;
+    background-color: 'transparent';
+}
+
+
+.search-button {
+    color: white;
+    font-size: 12px;
+    font-family: 'Inter', sans-serif;
+    background-color: #3975F8;
+    border-radius: 40px;
+    border: none;
+    margin-top: 4px;
+    height: 30px;
+    margin-right: 4px;
+}
+
+.search-button:hover{
+    background: #4285f4;
+    border-color: #4285f4;
+}
+
+.search-container {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);   
+}
+
+.search-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+
+}
+
+
+.information {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: -28px;
+    gap: 0;
+    margin-left: 15px;
+}
+
+.information h1 {
+    font-size: 38px;
+    padding: 10px 15px;
+    color: black;
+    text-align: center;
+    margin-top: 70px;
+    font-family: 'Bangers', cursive;
+}
+
+.information p {
+    text-align: center;
+    margin-top: -35px;
+    font-family: 'Bangers', cursive;
+}
+
+.info1 {
+  background-image: url('../../assets/bubble1.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 260px;
+  height: 200px;
+  margin-top: 20px;
+  
+}
+
+.info1 h1 {
+    margin-left: -25px;
+}
+
+.info1 p {
+    margin-left: -15px;
+}
+
+.info2 {
+  background-image: url('../../assets/bubble2.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 280px;
+  height: 180px;
+  margin-top: 30px;
+}
+
+.info2 h1 {
+    margin-top: 55px;
+    margin-left: -25px;
+}
+
+.info2 p {
+    margin-left: -25px;
+}
+
+.info3 {
+  background-image: url('../../assets/bubble3.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: 0px 28px;
+  width: 340px;
+  height: 230px;
+  margin-left: -20px;
+}
+
+.info3 h1 {
+    margin-top: 80px;
+    margin-left: -10px;
+}
+
+.info3 p {
+    margin-left: -15px;
+}
+
+

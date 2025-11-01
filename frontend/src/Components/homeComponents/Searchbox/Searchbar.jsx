@@ -19,14 +19,14 @@ function Searchbar() {
     const customStyles = {
         placeholder: (provided) => ({
             ...provided,
-            fontFamily: "'Itim', cursive",
+            fontFamily: "'Inter', sans-serif",
         }),
         control: (provided) => ({
             ...provided,
             border: 'none',
             boxShadow: 'none',
             backgroundColor: 'transparent',
-            fontFamily: "'Itim', cursive",
+            fontFamily: "Arial, Helvetica, sans-serif;",
         }),
         valueContainer: (provided) => ({
             ...provided,
@@ -37,7 +37,7 @@ function Searchbar() {
         menu: (provided) => ({
             ...provided,
             width: '576px',
-            fontFamily: "'Itim', cursive",
+            fontFamily: "'Inter', sans-serif",
         }),
     };
 

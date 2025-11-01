@@ -1,9 +1,10 @@
 import './Homepage.css'
-import Searchbox from '../../Components/Searchbox/Searchbox'
-import CompareBox from '../../Components/CompareBox/CompareBox'
-import Standing from '../../Components/Standing/Standing'
-import Arrow from '../../Components/Arrow/Arrow'
+import Searchbox from '../../Components/homeComponents/Searchbox/Searchbox.jsx'
+import CompareBox from '../../Components/homeComponents/CompareBox/CompareBox.jsx'
+import Standing from '../../Components/homeComponents/Standing/Standing.jsx'
+import Arrow from '../../Components/homeComponents/Arrow/Arrow.jsx'
 import image1 from '../../assets/background1.jpg'
+
 
 function Homepage() {
     return (
@@ -21,8 +22,12 @@ function Homepage() {
             </div>
             <Arrow></Arrow>
             <div id="secondSection" className="secondSection">
-              <CompareBox></CompareBox>
-              <Standing></Standing>
+              <div className="left">
+                <CompareBox></CompareBox>
+              </div>
+              <div className="right">
+                <Standing></Standing>
+              </div>
             </div>
           </div>
         </div>
