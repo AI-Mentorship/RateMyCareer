@@ -1,0 +1,52 @@
+@import url("https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;800;900&display=swap");
+.bar-container {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    margin-top: 15px;
+    height: 60px;
+    width: 400px;
+    background-color: red;
+    border-radius: 10px;
+    color: white;
+    font-family: "Item",sans-serif;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 2px 8px rgba(202, 6, 6, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.bar-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.top-container {
+    position: absolute;
+    height: 50px;
+    width: 50px;
+    background-color: rgb(15, 35, 90);
+    border-radius: 5px;
+    clip-path: polygon(0 0%, 100% 0, 30% 100%, 0 100%);
+    top: -5px;
+    left: -5px;
+    z-index: 1;
+}
+
+.name {
+    font-size: 20px;
+    margin-left: 45px;
+}
+
+.vibeScore {
+    font-size: 30px;
+    margin: 15px;
+    font-family: 'Bangers',cursive;
+}
+
+.ranking {
+    margin-top: 8px;
+    margin-right: 17px;
+    font-size: 15px;
+    font-family: "Bangers",cursive;
+}

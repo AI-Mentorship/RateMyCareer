@@ -1,0 +1,37 @@
+@import url("https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;800;900&display=swap");
+
+.graph {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    width: 800px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 400px;
+}
+
+.graph:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.graph h1 {
+    font-family: "Bangers",cursive;
+}
+
+.recharts-wrapper {
+    margin-left:-20px;
+}
+
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+    stroke: #e0e0e0;
+}
+
+.recharts-tooltip-wrapper {
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}

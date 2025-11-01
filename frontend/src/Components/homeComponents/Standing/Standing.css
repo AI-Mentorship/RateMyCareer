@@ -1,0 +1,26 @@
+@import url("https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;800;900&display=swap");
+
+.standing {
+    display: flex;
+    flex-direction: column;
+    width: 450px;
+    height: 470px;
+    background-color: #fffbfb;
+    margin-right: 60px;
+    align-items: center;
+    text-align: center;
+    margin-top: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.standing:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+.tilte {
+    font-family: 'Bangers', cursive;
+    font-weight: 700;
+    margin-top: 20px;
+    font-size: 25px;
+}
