@@ -1,20 +1,31 @@
-import './Searchbox.css'
-import React, { useState } from 'react';
-import Select from "react-select"
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Select from "react-select";
+import "./Searchbox.css";
 
 function Searchbar() {
-    const options = [
-        { value: "dataScienetist", label: "Data Scientist" },
-        { value: "management", label: "HR / Management" },
-        { value: "physicalTherapist", label: "Physical Therapist" },
-        { value: "teacher", label: "Teacher" },
-        { value: "lawyer", label: "Lawyer" },
-        { value: "police", label: "Police" },
-        { value: "ux", label: "UX" },
-        { value: "dataAnalyst", label: "Data Analyst" },
-        { value: "graphicDesign", label: "Graphic Design" },
-        { value: "csCareer", label: "CS Career" },
-    ];
+  const navigate = useNavigate();
+  const [selectedOption, setSelectedOption] = useState(null);
+
+  const options = [
+    { value: "dataScientist", label: "Data Scientist" },
+    { value: "management", label: "HR / Management" },
+    { value: "physicalTherapist", label: "Physical Therapist" },
+    { value: "teacher", label: "Teacher" },
+    { value: "lawyer", label: "Lawyer" },
+    { value: "police", label: "Police" },
+    { value: "ux", label: "UX" },
+    { value: "dataAnalyst", label: "Data Analyst" },
+    { value: "graphicDesign", label: "Graphic Design" },
+    { value: "csCareer", label: "CS Career" },
+  ];
+
+  const handleSearch = () => {
+    if (selectedOption) {
+      navigate(`/profession`);
+    }
+  };
+
 
     const customStyles = {
         placeholder: (provided) => ({
@@ -40,7 +51,6 @@ function Searchbar() {
             fontFamily: "'Inter', sans-serif",
         }),
     };
-
     return (
         <div className="search-container">
             <Select
@@ -48,8 +58,10 @@ function Searchbar() {
                 options={options}
                 styles={customStyles}
                 placeholder="Select a profession..."
+                value={selectedOption}
+                onChange={(opt) => setSelectedOption(opt)}
             />
-            <button className="search-button">SEARCH</button>
+            <button className="search-button" onClick={handleSearch}>SEARCH</button>
         </div>
     )
 }

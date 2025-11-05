@@ -1,23 +1,23 @@
 import './Profession.css'
-import Navbar from '../../Components/searchComponents/Navbar'
-import Chart from '../../Components/searchComponents/Chart'
-import Quote from '../../Components/searchComponents/Quote'
-import Title from '../../Components/searchComponents/Title'
+import Navbar from '../../Components/searchComponents/Navbar/Navbar'
+import Chart from '../../Components/searchComponents/Chart/Chart'
+import Quote from '../../Components/searchComponents/Quote/Quote'
+import Title from '../../Components/searchComponents/Title/Title'
 
 
 function Profession(){
     return (
-        <div className="page">
-            <div className="backgrounds">
-                <div className="background1"></div>
-                <div className="background2"></div>
-                <div className="background3"></div>
-                <div className="background4"></div>
+        <div className="prof-page">
+            <div className="prof-backgrounds">
+                <div className="prof-background1"></div>
+                <div className="prof-background2"></div>
+                <div className="prof-background3"></div>
+                <div className="prof-background4"></div>
             </div>
-            <div className="content">
+            <div className="prof-content">
                 <Navbar></Navbar>
                 <Title></Title>
-                <div className="first-section">
+                <div className="top-section">
                     <h1>Overview</h1>
                     <h2>"</h2>
                     <p>Data Analysts enjoy a stable career with positive growth in demand. 
@@ -25,10 +25,10 @@ function Profession(){
                     advancement opportunities. The work often involves problem-solving 
                     and can be intellectually rewarding.</p>
                 </div>
-                <div className="second-section">
+                <div className="mid-section">
                     <Chart></Chart>
                 </div>
-                <div className="third-section">
+                <div className="bot-section">
                     <Quote></Quote>
                 </div>
             </div>

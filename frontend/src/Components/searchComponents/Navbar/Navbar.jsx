@@ -1,15 +1,21 @@
 import "./Navbar.css"
 import Searchbar from "./Searchbar"
+import { useNavigate } from "react-router-dom";
 
 function Navbar() {
-    return (
+    const navigate = useNavigate();
+ 
+    function handleOnClick() {
+        navigate('/');
+    }
 
+    return (
         <div className='navBar'>
-            <div className="left">
+            <div className="left-side">
                 <div className="tilte">Ratemycareer</div>
                 <Searchbar></Searchbar>
             </div>
-            <button className="returnHome">Homepage</button>
+            <button className="returnHome" onClick={handleOnClick}>Homepage</button>
         </div>
     )
 }

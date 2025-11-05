@@ -11,9 +11,10 @@
 }
 
 .quote-container h1{
-    font-family: "Bangers", cursive;
-    margin: 0;
     font-size: 50px;
+    font-family: "Bangers",cursive;
+    color: #2d3748;
+    margin-top: -10px;
 }
 
 .slideBar {
@@ -28,9 +29,10 @@
 .leftArrow{
     font-size: 120px;
     position: absolute;
-    top: 5px;
+    top: 10px;
     left: -130px;
     cursor: pointer;
+    color: #2d3748;
 }
 
 .leftArrow:hover {
@@ -40,7 +42,7 @@
 .rightArrow{
     font-size: 120px;
     position: absolute;
-    top: 5px;
+    top: 10px;
     right: -130px;
     cursor: pointer;
 }
@@ -50,10 +52,14 @@
 }
 
 .slideBar p{
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
+    margin-top: -10px;
+    font-family: 'Item',sans-serif;
     overflow: hidden;
     width: 100%;
+    font-size: 18px;
+    color: #2d3748;
+    line-height: 1.5;
+
 }
  
 .slideRight {

@@ -6,7 +6,7 @@ function Standing() {
 
     return (
         <div className="standing">
-            <div className="tilte">Leaderboard</div>
+            <div className="ranking-tilte">Leaderboard</div>
             <Topbar rank="1st" profession="Teacher" score={5}></Topbar>
             <Topbar rank="2nd" profession="Lawyer" score={4.8}></Topbar>
             <Topbar rank="3rd" profession="Police" score={4.5}></Topbar>

@@ -1,12 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;800;900&display=swap");
 
-.page {
+.prof-page {
     display: flex;
     flex-direction: column;
     width: 98.3vw;
 }
 
-.background1 {
+.prof-background1 {
     position: relative;
     width: 100%;
     height: 350px;
@@ -18,7 +18,7 @@
 
 }
 
-.background1::before {
+.prof-background1::before {
     content: '';
     position: absolute;
     top: 0;
@@ -27,13 +27,13 @@
     bottom: 0;
     backdrop-filter: blur(8px);
 }
-.background2 {
+.prof-background2 {
     margin-top: -100px;
     height: 480px;
     background-color: #FFD79F;
 }
 
-.background3 {
+.prof-background3 {
     margin-top: -100px;
     height: 400px;
     width: 100%;
@@ -41,14 +41,14 @@
     clip-path: polygon(0 0, 100% 18%, 100% 80%, 0 100%);
 }
 
-.background4 {
+.prof-background4 {
     margin-top: -120px;
     height: 530px;
     background-color: #D9D9D9;
     clip-path: polygon(0, 100% 0, 100% 100%, 0 100%);
 }
 
-.content {
+.prof-content {
     position: absolute;
     left: 195px;
     right: 195px;
@@ -57,32 +57,7 @@
     flex-direction: column;
 }
 
-.first-section {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-    align-items: center;
-    margin-top: 30px;
-}
-
-.first-section h1 {
-    margin-top: 50px;
-    font-family: "Bangers",cursive;
-}
-
-.first-section h2 {
-    margin-top: -50px;
-    font-family: "Bangers",cursive;
-    font-size: 100px;
-}
-.first-section p {
-    width: 800px;
-    font-size: 20px;
-    margin-top: -140px;
-}
-
-.second-section {
+.top-section {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -91,7 +66,38 @@
     margin-top: 40px;
 }
 
-.third-section {
+.top-section h1 {
+    margin-top: 90px;
+    font-size: 50px;
+    font-family: "Bangers",cursive;
+    color: #2d3748;
+}
+
+.top-section h2 {
+    margin-top: -20px;
+    font-size: 100px;
+    font-family: "Bangers",cursive;
+    color: #2d3748;
+}
+.top-section p {
+    width: 800px;
+    font-size: 18px;
+    margin-top: -110px;
+    font-family: 'Inter', sans-serif;
+    color: #2d3748;
+    line-height: 1.5;
+}
+
+.mid-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.bot-section {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -100,17 +106,17 @@
     margin-top: 30px;
 }
 
-.third-section h1 {
+.bot-section h1 {
     margin-top: 50px;
     font-family: "Bangers",cursive;
 }
 
-.third-section h2 {
+.bot-section h2 {
     margin-top: -50px;
     font-family: "Bangers",cursive;
     font-size: 100px;
 }
-.third-section p {
+.bot-section p {
     width: 800px;
     font-size: 20px;
     margin-top: -140px;

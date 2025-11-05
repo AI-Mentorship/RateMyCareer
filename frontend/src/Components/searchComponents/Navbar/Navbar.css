@@ -7,7 +7,7 @@
     margin-top: -50px;
 }
 
-.left {
+.left-side {
     display: flex;
     flex-direction: row;
     align-items: center;

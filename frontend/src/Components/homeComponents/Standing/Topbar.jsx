@@ -5,7 +5,7 @@ function Topbar({rank, profession, score}) {
         return (
             <div className='topbar'>
                 <div className="bar-container">
-                    <div className="name">{profession}</div>
+                    <div className="rank-name">{profession}</div>
                     <div className="vibeScore">{score}</div>
                     <div className="top-container">
                         <div className='ranking'
@@ -24,7 +24,7 @@ function Topbar({rank, profession, score}) {
                         color: "black",
                     }}
                 >
-                    <div className="name">{profession}</div>
+                    <div className="rank-name">{profession}</div>
                     <div className="vibeScore">{score}</div>
                     <div className="top-container"
                         style={{

@@ -18,7 +18,9 @@
 }
 
 .graph h1 {
+    font-size: 50px;
     font-family: "Bangers",cursive;
+    color: #2d3748;
 }
 
 .recharts-wrapper {

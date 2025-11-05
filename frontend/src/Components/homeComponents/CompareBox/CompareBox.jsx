@@ -18,7 +18,7 @@ function CompareBox() {
     const customStyles = {
         placeholder: (provided) => ({
             ...provided,
-            fontFamily: "Arial, Helvetica, sans-serif;",    
+            fontFamily: "'Item', sans-serif",    
             textAlign: "left",
         }),
         control: (provided) => ({
