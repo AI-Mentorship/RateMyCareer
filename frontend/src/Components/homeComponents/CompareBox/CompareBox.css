@@ -1,0 +1,85 @@
+@import url("https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;800;900&display=swap");
+
+.compare-container {
+    display: flex;
+    flex-direction: column;
+    margin-left: 50px;
+}
+
+.compare-main {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin-top: 10px;
+    height: 470px;
+    width: 450px;
+    background-color: #fffbfb;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.compare-main:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+h2 {
+    font-family: 'Bangers', cursive;
+}
+
+.compare-main p {
+    margin-top: -5px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+}
+
+.compare-main h4 {
+    text-align: left;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+}
+
+.comparison {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 25px;
+    margin-right: 25px;
+    margin-top: 5px;
+    gap: 5px;
+}
+
+.compare {
+    margin-top: 12px;
+    margin-left: 25px;
+    height: 38px;
+    width: 400px;
+    background-color: #3975F8;  
+    color: white;
+    font-family: 'Itim', sans-serif;
+    border-radius: 30px;
+    border: 0px solid white;
+    ;
+
+}
+
+.compare:hover{
+    background: #3a75d3;
+    border-color: #4285f4;
+}
+
+.select-box1 {
+    margin-top: -12px;
+}
+
+.select-box2 {
+    margin-top: -12px;
+}
+
+.second-prof {
+    margin-top: 20px;
+}
+
+.first-prof {
+    margin-top: 10px;
+}

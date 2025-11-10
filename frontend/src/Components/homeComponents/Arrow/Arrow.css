@@ -1,0 +1,26 @@
+.arrow {
+    height: 45px;
+    width: 150px;
+    border-radius: 40px;
+    border: none;
+    background-color: #3975F8;
+    color: white;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    padding-left: 8px;
+    padding-top: 0px;
+    margin-top: 80px;
+    margin-bottom: 80px;
+    margin-left: 450px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.arrow:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.arrow:hover{
+    background: #4285f4;
+    border-color: #4285f4;
+}
