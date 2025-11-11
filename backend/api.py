@@ -267,6 +267,95 @@ def timeline():
     return jsonify({'career': career, 'timeline': timeline}), 200
 
 
+@app.route('/api/career_summaries', methods=['GET'])
+def career_summaries():
+    """Return career summary rows from the career_summaries table.
+
+    Query params:
+      career: career_name (optional) - filter by career_name
+      limit: int (optional) - number of rows to return (default 100)
+    """
+    supabase = get_supabase_client()
+    if not supabase:
+        return jsonify({'error': 'Supabase credentials missing or client init failed.'}), 500
+
+    career = request.args.get('career')
+    try:
+        limit = int(request.args.get('limit', 100))
+    except Exception:
+        limit = 100
+
+    try:
+        if career:
+            query = supabase.table('career_summaries').select('*').eq('career_name', career).order('created_at', desc=True).limit(limit)
+            res = query.execute()
+            if res and getattr(res, 'data', None) is not None:
+                return jsonify({'career': career, 'rows': res.data}), 200
+            return jsonify({'data': res}), 200
+
+        # no career filter: return recent summaries
+        query = supabase.table('career_summaries').select('*').order('created_at', desc=True).limit(limit)
+        res = query.execute()
+        if res and getattr(res, 'data', None) is not None:
+            return jsonify({'data': res.data}), 200
+        return jsonify({'data': res}), 200
+    except Exception as e:
+        logging.exception(f"Error fetching career_summaries: {e}")
+        return jsonify({'error': 'failed to fetch career_summaries'}), 500
+
+
+@app.route('/api/quotes', methods=['GET'])
+def quotes():
+    """Return quotes from the quotes table.
+
+    Query params:
+      career: career_name (optional) - filter by career_name
+      limit: int (optional) - number of rows to return (default 100)
+      random: bool (optional) - if true, return a random quote for the career (when career provided)
+    """
+    supabase = get_supabase_client()
+    if not supabase:
+        return jsonify({'error': 'Supabase credentials missing or client init failed.'}), 500
+
+    career = request.args.get('career')
+    try:
+        limit = int(request.args.get('limit', 100))
+    except Exception:
+        limit = 100
+    random_flag = request.args.get('random', 'false').lower() in ('1', 'true', 'yes')
+
+    try:
+        if career:
+            if random_flag:
+                # fetch up to `limit` rows and return one random pick
+                query = supabase.table('quotes').select('*').eq('career_name', career).limit(limit)
+                res = query.execute()
+                if res and getattr(res, 'data', None) is not None:
+                    rows = res.data
+                    if rows:
+                        import random
+                        pick = random.choice(rows)
+                        return jsonify({'career': career, 'quote': pick}), 200
+                    return jsonify({'career': career, 'quote': None}), 200
+                return jsonify({'data': res}), 200
+
+            query = supabase.table('quotes').select('*').eq('career_name', career).order('created_at', desc=True).limit(limit)
+            res = query.execute()
+            if res and getattr(res, 'data', None) is not None:
+                return jsonify({'career': career, 'rows': res.data}), 200
+            return jsonify({'data': res}), 200
+
+        # no career filter: return recent quotes
+        query = supabase.table('quotes').select('*').order('created_at', desc=True).limit(limit)
+        res = query.execute()
+        if res and getattr(res, 'data', None) is not None:
+            return jsonify({'data': res.data}), 200
+        return jsonify({'data': res}), 200
+    except Exception as e:
+        logging.exception(f"Error fetching quotes: {e}")
+        return jsonify({'error': 'failed to fetch quotes'}), 500
+
+
 if __name__ == '__main__':
     # Run dev server on port 8000
     app.run(host='0.0.0.0', port=8000, debug=True)
