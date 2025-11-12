@@ -1,10 +1,13 @@
 import './Arrow.css'
 
 function Arrow () {
-    const target = document.getElementById("secondSection");
+    function handleScroll(){
+        const target = document.getElementById("secondSection"); 
+        target.scrollIntoView({ behavior: "smooth" });
+    }
 
     return (
-        <button className="arrow" onClick={()=>target.scrollIntoView({ behavior: "smooth" })}> Explore More </button>
+        <button className="arrow" onClick={handleScroll}> Explore More </button>
     )
 }
 

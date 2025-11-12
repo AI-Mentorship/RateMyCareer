@@ -50,17 +50,16 @@ h2 {
 }
 
 .compare {
-    margin-top: 12px;
-    margin-left: 25px;
+    margin-top: 15px;
+    margin-left: 150px;
     height: 38px;
-    width: 400px;
+    width: 150px;
     background-color: #3975F8;  
     color: white;
     font-family: 'Itim', sans-serif;
     border-radius: 30px;
     border: 0px solid white;
-    ;
-
+    
 }
 
 .compare:hover{

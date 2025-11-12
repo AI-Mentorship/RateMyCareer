@@ -1,8 +1,8 @@
 import './Chart.css'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
-function Chart() {
-    const sentimentData = [
+function Chart({ data }) {
+    const sentimentData = data && data.length ? data : [
         { week: 'Week 1', sentiment: 0.2 },
         { week: 'Week 2', sentiment: 0.4 },
         { week: 'Week 3', sentiment: 0.3 },

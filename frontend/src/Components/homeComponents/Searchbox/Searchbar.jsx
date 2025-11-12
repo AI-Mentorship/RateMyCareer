@@ -7,23 +7,24 @@ function Searchbar() {
   const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState(null);
 
-  const options = [
-    { value: "dataScientist", label: "Data Scientist" },
-    { value: "management", label: "HR / Management" },
-    { value: "physicalTherapist", label: "Physical Therapist" },
-    { value: "teacher", label: "Teacher" },
-    { value: "lawyer", label: "Lawyer" },
+const options = [
     { value: "police", label: "Police" },
-    { value: "ux", label: "UX" },
-    { value: "dataAnalyst", label: "Data Analyst" },
-    { value: "graphicDesign", label: "Graphic Design" },
-    { value: "csCareer", label: "CS Career" },
-  ];
+    { value: "humanresources", label: "HR" },
+    { value: "Teachers", label: "Teacher" },
+    { value: "nursing", label: "Nurse" },
+    { value: "physicaltherapy", label: "Physical Therapy" },
+    { value: "Lawyertalk", label: "Lawyer" },
+    { value: "DataScienceJobs", label: "Data Scientist" },
+    { value: "dataanalytics", label: "Data Analyst" },
+    { value: "UXResearch", label: "UX Designer" },
+];
 
   const handleSearch = () => {
-    if (selectedOption) {
-      navigate(`/profession`);
-    }
+            if (selectedOption) {
+            // pass both the canonical value and the display label so the Profession page
+            // can use the value for API calls and the label for UI display
+            navigate(`/profession`, { state: { careerValue: selectedOption.value, careerLabel: selectedOption.label } });
+        }
   };
 
 
@@ -36,8 +37,10 @@ function Searchbar() {
             ...provided,
             border: 'none',
             boxShadow: 'none',
-            backgroundColor: 'transparent',
-            fontFamily: "Arial, Helvetica, sans-serif;",
+            backgroundColor: 'rgba(255,255,255,0)',
+            fontFamily: "Arial, Helvetica, sans-serif",
+            width: '500px',
+            cursor: 'pointer',
         }),
         valueContainer: (provided) => ({
             ...provided,

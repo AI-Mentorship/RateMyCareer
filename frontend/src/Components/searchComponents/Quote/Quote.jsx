@@ -11,9 +11,11 @@ function Quote() {
     const quotes = [quote1,quote2,quote3,quote4,quote5]
     const [index,setIndex] = useState(1);
     const [name,setName] = useState("");
+    const [check,setCheck] = useState(1);
 
     function handleClickLeft(){
-        if (index > 0){
+        if (check > 0){
+            setCheck(c=>c-1);
             setName("slideRight");
             setTimeout(()=>{
                 setIndex(i=>i-1);
@@ -27,7 +29,8 @@ function Quote() {
     }
 
     function handleClickRight(){
-        if (index < quotes.length-1){
+        if (check < quotes.length-1){
+            setCheck(c=>c+1);
             setName("slideLeft");
             setTimeout(()=>{
                 setIndex(i=>i+1);

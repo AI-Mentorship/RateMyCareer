@@ -1,9 +1,13 @@
 
-import React, { useState } from 'react';
-import './Navbar.css'
-import Select from "react-select"
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Select from "react-select";
+import "./Navbar.css";
 
 function Searchbar(props) {
+    const navigate = useNavigate();
+    const [selectedOption, setSelectedOption] = useState(null);
+
     const options = [
         { value: "dataScienetist", label: "Data Scientist" },
         { value: "management", label: "HR / Management" },
@@ -17,6 +21,12 @@ function Searchbar(props) {
         { value: "csCareer", label: "CS Career" },
     ];
 
+    const handleSearch = () => {
+        if (selectedOption) {
+        navigate(`/profession`, { state: { careerValue: selectedOption.value, careerLabel: selectedOption.label } });
+        }
+    };
+
     const customStyles = {
         placeholder: (provided) => ({
             ...provided,
@@ -26,9 +36,10 @@ function Searchbar(props) {
             ...provided,
             border: 'none',
             boxShadow: 'none',
-            backgroundColor: 'transparent',
+            backgroundColor: 'rgba(255,255,255,0)',
             fontFamily: "Arial, Helvetica, sans-serif",
             width: '500px',
+            cursor: 'pointer',
         }),
         valueContainer: (provided) => ({
             ...provided,
@@ -39,7 +50,7 @@ function Searchbar(props) {
             ...provided,
             minWidth: '100%',
             fontFamily: "Arial, Helvetica, sans-serif",
-            width: '580px',
+            width: '563px',
         }),
     };
 
@@ -50,8 +61,10 @@ function Searchbar(props) {
                 options={options}
                 styles={customStyles}
                 placeholder="Select a profession..."
+                value={selectedOption}
+                onChange={(opt) => setSelectedOption(opt)}
             />
-            <button className="search-button">SEARCH</button>
+            <button className="search-button" onClick={handleSearch}>SEARCH</button>
         </div>
     )
 }

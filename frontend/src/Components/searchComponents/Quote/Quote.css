@@ -33,10 +33,12 @@
     left: -130px;
     cursor: pointer;
     color: #2d3748;
+    transition: transform 0.3s ease;
 }
 
 .leftArrow:hover {
     color: rgb(112, 111, 111);
+    transform: translateY(-5px);
 }
 
 .rightArrow{
@@ -45,9 +47,11 @@
     top: 10px;
     right: -130px;
     cursor: pointer;
+    transition: transform 0.3s ease;
 }
 
 .rightArrow:hover {
+    transform: translateY(-5px);
     color: rgb(112, 111, 111);
 }
 
