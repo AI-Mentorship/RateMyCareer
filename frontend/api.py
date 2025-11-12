@@ -6,7 +6,6 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 from supabase import create_client
 from typing import List, Dict, Any
-import random
 
 # Load .env from project root if available
 root_env = os.path.join(os.path.dirname(os.path.dirname(__file__)), '..', '.env')
@@ -266,89 +265,6 @@ def timeline():
     timeline = [merged[k] for k in sorted(merged.keys())]
 
     return jsonify({'career': career, 'timeline': timeline}), 200
-
-
-@app.route('/api/career_summaries', methods=['GET'])
-def career_summaries():
-    """Return rows from the career_summaries table.
-
-    Query params:
-      career: career_name (optional) - filter by career_name
-      limit: int (optional) - number of rows to return (default 50)
-    """
-    career = request.args.get('career')
-    try:
-        limit = int(request.args.get('limit', 50))
-    except Exception:
-        limit = 50
-
-    supabase = get_supabase_client()
-    if not supabase:
-        return jsonify({'error': 'Supabase credentials missing or client init failed.'}), 500
-
-    try:
-        query = supabase.table('career_summaries').select('*')
-        if career:
-            query = query.eq('career_name', career)
-        query = query.order('created_at', desc=True).limit(limit)
-        res = query.execute()
-        rows = res.data if (res and getattr(res, 'data', None) is not None) else []
-
-        # If client asked for a single row (limit==1), return the summary at top-level
-        if limit == 1:
-            if rows and len(rows) > 0:
-                return jsonify({'career': career, 'summary': rows[0].get('summary'), 'row': rows[0]}), 200
-            else:
-                return jsonify({'career': career, 'summary': None, 'row': None}), 200
-
-        # Otherwise return the rows list
-        return jsonify({'career': career, 'rows': rows}), 200
-    except Exception as e:
-        logging.error(f"Error fetching career_summaries: {e}")
-        return jsonify({'error': 'Failed to fetch career_summaries'}), 500
-
-
-@app.route('/api/quotes', methods=['GET'])
-def quotes():
-    """Return rows from the quotes table.
-
-    Query params:
-      career: career_name (optional) - filter by career_name
-      limit: int (optional) - number of rows to return (default 10)
-      random: bool (optional) - if true, return a random selection of rows
-    """
-    career = request.args.get('career')
-    rnd = request.args.get('random', 'false').lower() in ('1', 'true', 'yes')
-    try:
-        limit = int(request.args.get('limit', 10))
-    except Exception:
-        limit = 10
-
-    supabase = get_supabase_client()
-    if not supabase:
-        return jsonify({'error': 'Supabase credentials missing or client init failed.'}), 500
-
-    try:
-        # Fetch rows (limit defensively to avoid huge payloads when random sampling)
-        query = supabase.table('quotes').select('*')
-        if career:
-            query = query.eq('career_name', career)
-        # If requesting random, fetch up to a reasonable cap and sample in Python
-        fetch_cap = max(limit * 5, 100) if rnd else limit
-        query = query.limit(fetch_cap)
-        res = query.execute()
-        rows = res.data if (res and getattr(res, 'data', None) is not None) else []
-
-        if rnd and rows:
-            # sample without replacement
-            sampled = random.sample(rows, min(limit, len(rows)))
-            return jsonify({'career': career, 'rows': sampled}), 200
-
-        # Otherwise return up to limit rows (already limited by query)
-        return jsonify({'career': career, 'rows': rows[:limit]}), 200
-    except Exception as e:
-        logging.error(f"Error fetching quotes: {e}")
-        return jsonify({'error': 'Failed to fetch quotes'}), 500
 
 
 if __name__ == '__main__':

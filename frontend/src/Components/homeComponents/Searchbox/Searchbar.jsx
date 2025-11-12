@@ -37,8 +37,10 @@ const options = [
             ...provided,
             border: 'none',
             boxShadow: 'none',
-            backgroundColor: 'transparent',
-            fontFamily: "Arial, Helvetica, sans-serif;",
+            backgroundColor: 'rgba(255,255,255,0)',
+            fontFamily: "Arial, Helvetica, sans-serif",
+            width: '500px',
+            cursor: 'pointer',
         }),
         valueContainer: (provided) => ({
             ...provided,

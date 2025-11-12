@@ -1,19 +1,22 @@
 import './Quote.css'
 import { useState } from 'react';
 
-function Quote() {
-    const quote1 = "Data Analysts enjoy a stable career with positive growth in demand. However, there are occasional mentions of job stress and limited advancement opportunities. The work often involves problem-solving and can be intellectually rewarding1.";
-    const quote2 = "Data Analysts enjoy a stable career with positive growth in demand. However, there are occasional mentions of job stress and limited advancement opportunities. The work often involves problem-solving and can be intellectually rewarding2.";
-    const quote3 = "Data Analysts enjoy a stable career with positive growth in demand. However, there are occasional mentions of job stress and limited advancement opportunities. The work often involves problem-solving and can be intellectually rewarding3.";
-    const quote4 = "Data Analysts enjoy a stable career with positive growth in demand. However, there are occasional mentions of job stress and limited advancement opportunities. The work often involves problem-solving and can be intellectually rewarding4.";
-    const quote5 = "Data Analysts enjoy a stable career with positive growth in demand. However, there are occasional mentions of job stress and limited advancement opportunities. The work often involves problem-solving and can be intellectually rewarding5.";
+function Quote({ quotes: propQuotes }) {
+    const fallback1 = "Data Analysts enjoy a stable career with positive growth in demand. However, there are occasional mentions of job stress and limited advancement opportunities. The work often involves problem-solving and can be intellectually rewarding1.";
+    const fallback2 = "Data Analysts enjoy a stable career with positive growth in demand. However, there are occasional mentions of job stress and limited advancement opportunities. The work often involves problem-solving and can be intellectually rewarding2.";
+    const fallback3 = "Data Analysts enjoy a stable career with positive growth in demand. However, there are occasional mentions of job stress and limited advancement opportunities. The work often involves problem-solving and can be intellectually rewarding3.";
+    const fallback4 = "Data Analysts enjoy a stable career with positive growth in demand. However, there are occasional mentions of job stress and limited advancement opportunities. The work often involves problem-solving and can be intellectually rewarding4.";
+    const fallback5 = "Data Analysts enjoy a stable career with positive growth in demand. However, there are occasional mentions of job stress and limited advancement opportunities. The work often involves problem-solving and can be intellectually rewarding5.";
 
-    const quotes = [quote1,quote2,quote3,quote4,quote5]
-    const [index,setIndex] = useState(1);
+    const defaultQuotes = [fallback1,fallback2,fallback3,fallback4,fallback5]
+    const quotes = Array.isArray(propQuotes) && propQuotes.length ? propQuotes : defaultQuotes
+    const [index,setIndex] = useState(0);
     const [name,setName] = useState("");
+    const [check,setCheck] = useState(0);
 
     function handleClickLeft(){
-        if (index > 0){
+        if (check > 0){
+            setCheck(c=>c-1);
             setName("slideRight");
             setTimeout(()=>{
                 setIndex(i=>i-1);
@@ -27,7 +30,8 @@ function Quote() {
     }
 
     function handleClickRight(){
-        if (index < quotes.length-1){
+        if (check < quotes.length-1){
+            setCheck(c=>c+1);
             setName("slideLeft");
             setTimeout(()=>{
                 setIndex(i=>i+1);

@@ -72,7 +72,7 @@ h1 {
     display: flex;
     flex-direction: row;
     justify-content: center;
-     background-color: transparent;
+    background-color: transparent;
     gap: 0;
     margin-left: 15px;
 }
@@ -93,13 +93,13 @@ h1 {
 }
 
 .info1 {
-  background-image: url('../../assets/bubble1.png');
+  background-image: url('../../../assets/bubble1.png');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   width: 260px;
   height: 200px;
-  margin-top: 20px;
+  margin-top: -10px;
   
 }
 
@@ -112,13 +112,13 @@ h1 {
 }
 
 .info2 {
-  background-image: url('../../assets/bubble2.png');
+  background-image: url('../../../assets/bubble2.png');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   width: 280px;
   height: 180px;
-  margin-top: 30px;
+  margin-top: 0px;
 }
 
 .info2 h1 {
@@ -131,13 +131,14 @@ h1 {
 }
 
 .info3 {
-  background-image: url('../../assets/bubble3.png');
+  background-image: url('../../../assets/bubble3.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: 0px 28px;
   width: 340px;
   height: 230px;
   margin-left: -20px;
+  margin-top: -25px;
 }
 
 .info3 h1 {

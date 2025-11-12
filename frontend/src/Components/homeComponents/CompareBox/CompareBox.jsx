@@ -30,6 +30,7 @@ function CompareBox() {
             boxShadow: "0 10px 30px rgba(0, 0, 0, 0.2)",
             textAlign: "left",
             fontFamily: "Arial, Helvetica, sans-serif;", 
+            cursor: "pointer",
         }),
         valueContainer: (provided) => ({
             ...provided,
