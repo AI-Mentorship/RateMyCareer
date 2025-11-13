@@ -4,6 +4,7 @@ from supabase import create_client, Client
 import pandas as pd
 from datetime import datetime
 from sklearn.linear_model import LinearRegression
+import numpy as np # <-- Added numpy for calculations
 
 # --- Setup and Connection ---
 load_dotenv()
@@ -127,15 +128,58 @@ try:
     # Merge in the career names
     final_df = pd.merge(final_df, subreddits_df.rename(columns={'display_name':'career_name'}), on='subreddit_id', how='left')
 
+    # --- NEW: Vibe Score Calculation ---
+    print("🌟 Calculating Vibe Score...")
+    
+    # Step 1: Config
+    v_multiplier = 0.8
+    
+    # Step 2: VolatilityRange
+    min_volatility = final_df['sentiment_volatility'].min()
+    max_volatility = final_df['sentiment_volatility'].max()
+    range_volatility = max_volatility - min_volatility
+    
+    # Step 3: DataWithMultiplier (Calculate volatility_multiplier)
+    # We use numpy for the vectorized 'where' (equivalent to SQL CASE)
+    a = 1.0 # The 'max' of the new range
+    b = v_multiplier # The 'min' of the new range
+    
+    final_df['volatility_multiplier'] = np.where(
+        range_volatility == 0,
+        0.9, # Default value if min and max are the same
+        # Formula to scale a value to a new inverted range [b, a]
+        (1 - ((final_df['sentiment_volatility'] - min_volatility) / range_volatility)) * (a - b) + b
+    )
+    
+    # Step 4: CalculatedScores (Calculate unnormalized_vibe_score)
+    final_df['unnormalized_vibe_score'] = (final_df['avg_sentiment'] - final_df['regret_ratio']) * final_df['volatility_multiplier']
+    
+    # Step 5: FinalScoreRange
+    min_score = final_df['unnormalized_vibe_score'].min()
+    
+    # Step 6: PositiveScores
+    # We add abs(min_score) to make the lowest possible score = 0
+    final_df['positive_unnormalized_score'] = final_df['unnormalized_vibe_score'] + abs(min_score)
+    
+    # Step 7: Final Vibe Score Calculation
+    final_df['vibe_score'] = 6 + (final_df['positive_unnormalized_score'] * 10)
+    
+    print("✨ Vibe Score calculation complete.")
+    # --- End of Vibe Score Logic ---
+
 
     # --- 7. Prepare Data for Insertion ---
     print("📝 Preparing final data for Supabase table...")
     final_df['record_date'] = datetime.now().isoformat()  
-    final_df['vibe_score'] = None
-
+    
+    # We no longer need 'vibe_score = None' as it's now calculated
+    
+    # We can add the intermediate columns to the final table if you want to inspect them
+    # Just add their names to this list.
     final_df = final_df[[
         'career_name', 'subreddit_id', 'record_date', 'avg_sentiment', 
         'sentiment_volatility', 'regret_ratio', 'forecasted_sentiment_avg', 'vibe_score'
+        # 'volatility_multiplier', 'unnormalized_vibe_score', 'positive_unnormalized_score' # <-- Uncomment to save these
     ]]
 
     final_df = final_df.dropna(subset=['career_name'])
@@ -154,4 +198,3 @@ try:
 
 except Exception as e:
     print(f"❌ An error occurred: {e}")
-
