@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './index.css'
 import App from './App.jsx'
 import ProfessionPage from './ProfessionPage.jsx'
+import ComparisonPage from './ComparisonPage.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -11,6 +12,7 @@ createRoot(document.getElementById('root')).render(
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/profession/:professionName" element={<ProfessionPage />} />
+        <Route path="/comparison" element={<ComparisonPage />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

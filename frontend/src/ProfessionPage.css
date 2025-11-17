@@ -4,7 +4,7 @@
 /* Main container */
 .profession-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);  
   padding: 0;
   font-family: 'Bangers', cursive;
 }
@@ -376,7 +376,7 @@ section h2 {
 
 .reddit-posts-section {
   background: white;
-  font-family: Arial, Helvetica, sans-serif; 
+  
 }
 
 .posts-container {

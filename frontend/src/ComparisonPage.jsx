@@ -3,6 +3,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 import Select from 'react-select';
 import './ComparisonPage.css';
 import comparisonBg from './assets/images/ComparisonPicture.png';
+import Navbar from './Navbar/Navbar.jsx';
 
 function ComparisonPage() {
   const availableProfessions = [
@@ -118,16 +119,22 @@ function ComparisonPage() {
     }),
   };
 
-  return (
+ return(
+
     <div className="comparison-page">
       {/* Diagonal split background with blue and yellow */}
       <div className="comparison-background">
+        <div className="nav-background"></div>
         <div className="blue-half" style={{ backgroundImage: `url(${comparisonBg})` }}></div>
         <div className="yellow-half"></div>
+        <div className="gray-half"></div>
       </div>
+    
 
       <div className="comparison-main-container">
-        
+
+      
+        <Navbar></Navbar>
         {/* Comparison Table */}
         <div className="comparison-table-section">
           <div className="table-header-label">Comparison Table</div>
