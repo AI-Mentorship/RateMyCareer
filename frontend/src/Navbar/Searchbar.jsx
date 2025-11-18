@@ -38,8 +38,9 @@ function Searchbar(props) {
             boxShadow: 'none',
             backgroundColor: 'transparent',
             fontFamily: "Arial, Helvetica, sans-serif",
-            minHeight: '32px',
+            height: '30px',
             cursor: 'pointer',
+            textAlign: "left",
         }),
         valueContainer: (provided) => ({
             ...provided,
@@ -49,7 +50,8 @@ function Searchbar(props) {
         menu: (provided) => ({
             ...provided,
             fontFamily: "Arial, Helvetica, sans-serif",
-            width: '100%',
+            width: '450px',
+            textAlign: "left",
         }),
     };
 
