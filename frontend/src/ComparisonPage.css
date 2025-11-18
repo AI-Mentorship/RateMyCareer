@@ -1,17 +1,23 @@
 @import url("https://fonts.googleapis.com/css2?family=Bangers&family=Itim&family=Inter:wght@400;700;800;900&display=swap");
 
-body {
-  background-color: #E8E8E8 !important;
+body, html {
+  background-color: #E8E8E8;
   margin: 0;
   padding: 0;
+  width: 100%;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 .comparison-page {
   width: 100%;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 /* Diagonal split background with blue and yellow */

@@ -4,6 +4,7 @@ import Select from 'react-select';
 import './ComparisonPage.css';
 import comparisonBg from './assets/images/ComparisonPicture.png';
 import Navbar from './Navbar/Navbar.jsx';
+import Footer from './Footer';
 
 function ComparisonPage() {
   const availableProfessions = [
@@ -235,6 +236,7 @@ function ComparisonPage() {
         </div>
 
       </div>
+      <Footer />
     </div>
   );
 }
