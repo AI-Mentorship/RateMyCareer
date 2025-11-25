@@ -1,6 +1,7 @@
 
 import './Profession.css'
 import { useEffect, useState } from 'react'
+import Select from 'react-select'
 import { useLocation } from 'react-router-dom'
 import Navbar from '../../Components/searchComponents/Navbar/Navbar'
 import Chart from '../../Components/searchComponents/Chart/Chart'
@@ -28,6 +29,29 @@ function Profession(){
     // Vite exposes env vars via import.meta.env and requires the VITE_ prefix for user vars.
     // If you're running under a different tool that exposes process.env, adjust accordingly.
     const API_BASE = import.meta.env.VITE_API_BASE || 'http://127.0.0.1:8000'
+
+    // canonical options (keep in sync with Searchbar/CompareBox)
+    const canonicalOptions = [
+        { value: "police", label: "Police" },
+        { value: "humanresources", label: "HR" },
+        { value: "Teachers", label: "Teacher" },
+        { value: "nursing", label: "Nurse" },
+        { value: "physicaltherapy", label: "Physical Therapy" },
+        { value: "Lawyertalk", label: "Lawyer" },
+        { value: "DataScienceJobs", label: "Data Scientist" },
+        { value: "dataanalytics", label: "Data Analyst" },
+        { value: "UXResearch", label: "UX Designer" },
+    ];
+
+    // UI: compare sidebar state
+    const [compareOpen, setCompareOpen] = useState(false)
+    const [compareSelected, setCompareSelected] = useState([])
+    const [compareMergedFull, setCompareMergedFull] = useState(null)
+    const [compareMerged, setCompareMerged] = useState(null)
+    const [compareSeries, setCompareSeries] = useState([])
+    const [compareAllowedMax, setCompareAllowedMax] = useState(null)
+    const [compareDisplayCount, setCompareDisplayCount] = useState(null)
+    const [compareInputCount, setCompareInputCount] = useState('')
 
     useEffect(()=>{
         let mounted = true
@@ -84,6 +108,38 @@ function Profession(){
                 if(!mounted) return
 
                 const chartData = (result.timeline || []).map(pt => ({ week: pt.date, sentiment: Number(pt.value) }))
+                // Append a one-month-ahead forecast point (4 weekly ticks ahead).
+                try{
+                    const mostRecentDateStr = chartData.length ? chartData[chartData.length-1].week : null
+                    const forecastVal = result.score && (result.score.forecasted_sentiment_avg ?? result.score.forecastedSentimentAvg ?? null)
+                    if(forecastVal !== null && forecastVal !== undefined){
+                        // compute weekly ticks after the most recent date: +1w, +2w, +3w (gaps), +4w (forecast)
+                        let baseDate = null
+                        if(mostRecentDateStr){
+                            const d = new Date(mostRecentDateStr)
+                            if(!isNaN(d.getTime())) baseDate = d
+                        }
+                        if(!baseDate){
+                            baseDate = new Date()
+                        }
+
+                        // create 3 gap points (sentiment=null) and then the forecast point at +4 weeks
+                        for(let i=1;i<=4;i++){
+                            const ptDate = new Date(baseDate)
+                            ptDate.setDate(ptDate.getDate() + (7 * i))
+                            const iso = ptDate.toISOString().slice(0,10)
+                            // skip if a point with the same week already exists
+                            if(chartData.find(pt => pt.week === iso)) continue
+                            if(i < 4){
+                                chartData.push({ week: iso, sentiment: null, isGap: true })
+                            } else {
+                                chartData.push({ week: iso, sentiment: Number(forecastVal), isForecast: true })
+                            }
+                        }
+                    }
+                }catch(e){
+                    console.info('Could not compute future forecast point', e)
+                }
                 setTimeline(chartData)
                 setScore(result.score || null)
                 setEffectiveCareer(result.name || career)
@@ -196,7 +252,100 @@ function Profession(){
                     </div> */}
                 </div>
                 <div className="mid-section">
-                    <Chart data={timeline}></Chart>
+                    <div style={{ position: 'relative', width: '100%' }}>
+                        <button className="chart-compare-toggle" onClick={() => setCompareOpen(v => !v)} title="Compare">▶</button>
+                        <Chart data={timeline} compareData={compareMerged} compareSeries={compareSeries}></Chart>
+                    </div>
+
+                    {/* Compare sidebar */}
+                    <div className={`compare-sidebar ${compareOpen ? 'open' : ''}`}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px' }}>
+                            <strong style={{ fontFamily: "'Itim', cursive" }}>Quick Compare</strong>
+                            <button onClick={() => setCompareOpen(false)} style={{ border: 'none', background: 'transparent', cursor: 'pointer' }}>✕</button>
+                        </div>
+                        <div style={{ padding: '0 16px 16px 16px' }}>
+                            <Select
+                                isMulti
+                                options={canonicalOptions.filter(o => (o.label !== (careerLabel || effectiveCareer || career)))}
+                                value={compareSelected}
+                                onChange={setCompareSelected}
+                                placeholder="Select professions to compare"
+                            />
+                            <div className="compare-controls" style={{ marginTop: 12 }}>
+                                <div className="compare-datapoint" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                    <label style={{ fontFamily: "'Itim', cursive", fontSize: 13, color: '#333' }}>Datapoints:</label>
+                                    <input type="number" min={1} value={compareInputCount} onChange={(e)=>setCompareInputCount(e.target.value)} style={{ width: 80, padding: '6px 8px', borderRadius: 6, border: '1px solid #ddd' }} />
+                                    <button onClick={() => {
+                                        const parsed = Number(compareInputCount) || 0
+                                        if(!compareMergedFull) return
+                                        const clamped = Math.max(1, Math.min(parsed, compareAllowedMax || compareMergedFull.length))
+                                        setCompareDisplayCount(clamped)
+                                        setCompareMerged(compareMergedFull.slice(-clamped))
+                                        try{ if(typeof window !== 'undefined') window.localStorage.setItem('prof_compare_display_count', String(clamped)) }catch(e){}
+                                    }} style={{ padding: '6px 10px', borderRadius: 6, border: 'none', background: '#667eea', color: 'white', cursor: 'pointer' }}>Apply</button>
+                                </div>
+                                <div className="compare-max-note" style={{ display: 'flex', alignItems: 'center', fontSize: 12, color:'#666' }}>{compareAllowedMax ? `(max ${compareAllowedMax})` : ''}</div>
+                                <button onClick={async () => {
+                                            // fetch timelines for selected options and merge; always include the current career timeline
+                                            if(!compareSelected || compareSelected.length === 0) return
+                                            const per = {}
+                                            // include base career timeline (map existing `timeline` state to same shape)
+                                            const baseName = careerLabel || effectiveCareer || career
+                                            per[baseName] = (timeline || []).map(pt => ({ date: pt.week, value: pt.sentiment, raw: pt, isForecast: pt.isForecast }))
+                                            for(const s of compareSelected){
+                                                const candidates = [s.value, s.label].filter(Boolean)
+                                                let tl = null
+                                                for(const c of candidates){
+                                                    try{
+                                                        const res = await fetch(`${API_BASE}/api/timeline?career=${encodeURIComponent(c)}&include_forecast=true&include_aggregate=true`)
+                                                        if(!res.ok) continue
+                                                        const j = await res.json()
+                                                        if(j && Array.isArray(j.timeline) && j.timeline.length){ tl = j.timeline; break }
+                                                    }catch(e){ continue }
+                                                }
+                                                per[s.label || s.value] = tl || []
+                                            }
+                                            // merge timelines by date
+                                            const merged = {}
+                                            Object.keys(per).forEach(profName => {
+                                                const t = per[profName] || []
+                                                t.forEach(pt => {
+                                                    const dt = pt.date || pt.record_date || pt.week || null
+                                                    if(!dt) return
+                                                    if(!merged[dt]) merged[dt] = { date: dt }
+                                                    const rawVal = pt.value !== undefined ? pt.value : (pt.sentiment_average !== undefined ? pt.sentiment_average : (pt.raw && (pt.raw.forecasted_sentiment_avg ?? pt.raw.avg_sentiment)))
+                                                    const num = rawVal === null || rawVal === undefined ? null : Number(rawVal)
+                                                    merged[dt][profName] = Number.isNaN(num) ? null : num
+                                                })
+                                            })
+                                            const mergedArray = Object.keys(merged).sort().map(k => merged[k])
+
+                                            // compute per-prof counts to enforce allowed-max rule (max difference 5)
+                                            const counts = Object.keys(per).map(k => (per[k] || []).length).sort((a,b)=>b-a)
+                                            const top = counts[0] || 0
+                                            const second = counts.length >= 2 ? counts[1] : 0
+                                            const computedAllowed = counts.length >=2 ? Math.min(top, second + 5) : top
+
+                                            // prepare series colors (ensure base career appears first)
+                                            const colors = ["#57AAC8", "#FF6B6B", "#4ECDC4", "#FFD93D", "#6BCF7F", "#A78BFA"]
+                                            const baseSeries = [{ name: baseName, color: colors[0] }]
+                                            const otherSeries = compareSelected.map((s,i)=>({ name: s.label || s.value, color: colors[(i+1) % colors.length] }))
+                                            const series = [...baseSeries, ...otherSeries]
+
+                                            // set states: store full merged array, computed allowed max, and default display count = allowed max
+                                            setCompareSeries(series)
+                                            setCompareMergedFull(mergedArray)
+                                            setCompareAllowedMax(computedAllowed)
+                                            const chosen = Math.min(computedAllowed || mergedArray.length, mergedArray.length)
+                                            setCompareDisplayCount(chosen)
+                                            setCompareInputCount(String(chosen))
+                                            setCompareMerged(mergedArray.slice(-chosen))
+                                            try{ if(typeof window !== 'undefined') window.localStorage.setItem('prof_compare_display_count', String(chosen)) }catch(e){}
+                                            }} style={{ padding: '8px 12px', borderRadius: 8, border: 'none', background: '#667eea', color: 'white', cursor: 'pointer' }} className="compare-action">Compare</button>
+                                        <button className="compare-clear" onClick={() => { setCompareSelected([]); setCompareMerged(null); setCompareSeries([]); }} style={{ padding: '8px 12px', borderRadius: 8, border: '1px solid #ccc', background: 'white', cursor: 'pointer' }}>Clear</button>
+                                    </div>
+                        </div>
+                    </div>
                 </div>
                 <div className="bot-section">
                     <Quote quotes={quotesList}></Quote>

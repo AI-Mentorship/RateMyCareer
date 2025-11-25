@@ -17,7 +17,8 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification, pipe
 
 # --- 1. SETUP AND CONFIGURATION ---
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-load_dotenv()
+# Load .env from root directory
+load_dotenv(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), '.env'))
 
 # --- NEW CONTROL FLAG ---
 # Set to True to save filtered_job_posts.csv and non_job_posts.csv.
@@ -58,6 +59,7 @@ FILTERED_JOB_POSTS_FILE = os.path.join(script_dir, 'filtered_job_posts.csv')
 SENTIMENT_DATA_FILE = os.path.join(script_dir, 'job_sentiment_data.csv')
 NON_JOB_POSTS_FILE = os.path.join(script_dir, 'non_job_posts.csv')
 SARCASM_MODEL_PATH = "sarcasm-model"
+REPORT_FILE = os.path.join(script_dir, 'supabase_report.csv')
 
 KNOWN_COPYPASTAS = load_copypastas_from_file(COPASTAS_FILE)
 sarcasm_model, sarcasm_tokenizer, ml_device = load_hf_model(SARCASM_MODEL_PATH)
@@ -120,6 +122,7 @@ def process_subreddit(reddit: praw.Reddit, supabase: Client, subreddit_name: str
         logging.info(f"--- Processing subreddit: r/{subreddit_name} ---")
         subreddit = reddit.subreddit(subreddit_name)
         sentiment_submissions_to_save, filtered_submissions_data, non_job_submissions_to_save = [], [], []
+        posts_pulled = 0
 
         if output_mode == 'supabase' and supabase:
             try:
@@ -135,6 +138,7 @@ def process_subreddit(reddit: praw.Reddit, supabase: Client, subreddit_name: str
 
         logging.info(f"Fetching {limit} 'hot' submissions...")
         for submission in subreddit.hot(limit=limit):
+            posts_pulled += 1
             try:
                 if submission.stickied or submission.author is None:
                     continue
@@ -186,6 +190,25 @@ def process_subreddit(reddit: praw.Reddit, supabase: Client, subreddit_name: str
                 supabase_sentiment = [{k: v for k, v in row.items() if k != 'subreddit_name'} for row in sentiment_submissions_to_save]
                 supabase.table("submissions").upsert(supabase_sentiment).execute()
                 logging.info(f"Saved {len(supabase_sentiment)} submissions to Supabase 'submissions' table.")
+            # Write a per-subreddit CSV report row for supabase mode
+            try:
+                report_row = {
+                    'timestamp': datetime.now(timezone.utc).isoformat(),
+                    'subreddit_name': subreddit_name,
+                    'posts_pulled': posts_pulled,
+                    'filtered_count': len(filtered_submissions_data),
+                    'sentiment_count': len(sentiment_submissions_to_save),
+                    'non_job_count': len(non_job_submissions_to_save)
+                }
+                file_exists = os.path.exists(REPORT_FILE) and os.path.getsize(REPORT_FILE) > 0
+                with open(REPORT_FILE, 'a', newline='', encoding='utf-8') as rf:
+                    writer = csv.DictWriter(rf, fieldnames=list(report_row.keys()))
+                    if not file_exists:
+                        writer.writeheader()
+                    writer.writerow(report_row)
+                logging.info(f"Wrote report row for r/{subreddit_name} to '{REPORT_FILE}'")
+            except Exception as e:
+                logging.error(f"Failed to write report row for r/{subreddit_name}: {e}")
             
         elif output_mode == 'csv':
             if sentiment_submissions_to_save:
@@ -216,9 +239,23 @@ def process_subreddit(reddit: praw.Reddit, supabase: Client, subreddit_name: str
                         writer.writerows(non_job_submissions_to_save)
 
         logging.info(f"✅ Successfully finished processing r/{subreddit_name}")
+        # return stats for higher-level aggregation
+        return {
+            'subreddit_name': subreddit_name,
+            'posts_pulled': posts_pulled,
+            'filtered_count': len(filtered_submissions_data),
+            'sentiment_count': len(sentiment_submissions_to_save),
+            'non_job_count': len(non_job_submissions_to_save)
+        }
     except Exception as e:
         logging.error(f"An unexpected error occurred for r/{subreddit_name}: {e}", exc_info=True)
-
+        return {
+            'subreddit_name': subreddit_name,
+            'posts_pulled': 0,
+            'filtered_count': 0,
+            'sentiment_count': 0,
+            'non_job_count': 0
+        }
 # --- 4. SCRIPT EXECUTION ---
 def main():
     # ... (main function is unchanged)
@@ -253,13 +290,47 @@ def main():
 
     try:
         csv_path = os.path.join(script_dir, "subreddits.csv")
+        logging.info(f"Reading subreddits from: {csv_path}")
         with open(csv_path, mode='r', encoding='utf-8') as f:
+            content = f.read()
+            logging.info(f"CSV content: {content}")
+            f.seek(0)  # Reset file pointer to beginning
             reader = csv.DictReader(f)
             subreddit_names = [row['subreddit_name'].strip() for row in reader if row.get('subreddit_name')]
+            logging.info(f"Found subreddits to process: {subreddit_names}")
         
+        if not subreddit_names:
+            logging.error("No valid subreddit names found in the CSV file!")
+            return
+
+        # Collect stats from each subreddit run so we can write a totals row at the end
+        all_stats = []
         for subreddit_name in subreddit_names:
-            process_subreddit(reddit_client, supabase_client, subreddit_name, args.limit, args.output)
-        
+            stats = process_subreddit(reddit_client, supabase_client, subreddit_name, args.limit, args.output)
+            if stats:
+                all_stats.append(stats)
+
+        # If running in supabase mode, write a totals row to the same report CSV
+        if args.output == 'supabase' and all_stats:
+            try:
+                totals = {
+                    'timestamp': datetime.now(timezone.utc).isoformat(),
+                    'subreddit_name': 'TOTAL',
+                    'posts_pulled': sum(s.get('posts_pulled', 0) for s in all_stats),
+                    'filtered_count': sum(s.get('filtered_count', 0) for s in all_stats),
+                    'sentiment_count': sum(s.get('sentiment_count', 0) for s in all_stats),
+                    'non_job_count': sum(s.get('non_job_count', 0) for s in all_stats)
+                }
+                file_exists = os.path.exists(REPORT_FILE) and os.path.getsize(REPORT_FILE) > 0
+                with open(REPORT_FILE, 'a', newline='', encoding='utf-8') as rf:
+                    writer = csv.DictWriter(rf, fieldnames=list(totals.keys()))
+                    if not file_exists:
+                        writer.writeheader()
+                    writer.writerow(totals)
+                logging.info(f"Wrote totals row to '{REPORT_FILE}'")
+            except Exception as e:
+                logging.error(f"Failed to write totals row to report: {e}")
+
         logging.info("--- All subreddits have been processed. ---")
     except Exception as e:
         logging.error(f"An error occurred: {e}", exc_info=True)

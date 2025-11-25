@@ -9,7 +9,7 @@ function Searchbox() {
     return (
         <div className="searchbox">
             <h1> RateMyCareer</h1>
-            <p className="intro">The emotional realities of different professions.</p>
+            <p className="intro">Real Careers. Real Emotions. Real Stories.</p>
             <Searchbar></Searchbar>
             <div className="information">
                 <div className="info1">

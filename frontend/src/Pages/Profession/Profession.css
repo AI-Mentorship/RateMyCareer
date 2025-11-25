@@ -105,6 +105,47 @@
     margin-top: 40px;
 }
 
+.chart-compare-toggle {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 36px;
+    height: 36px;
+    border-radius: 18px;
+    border: none;
+    background: rgba(0,0,0,0.12);
+    color: white;
+    cursor: pointer;
+    z-index: 30;
+}
+
+.compare-sidebar {
+    position: fixed;
+    right: -360px;
+    top: 120px;
+    width: 340px;
+    background: white;
+    border-radius: 8px 0 0 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    transition: right 220ms ease;
+    z-index: 100;
+}
+.compare-sidebar.open { right: 20px }
+
+/* layout improvements for controls inside the sidebar to avoid overflow */
+.compare-sidebar { box-sizing: border-box; padding-bottom: 12px; }
+.compare-sidebar .compare-controls { display: flex; gap: 8px; padding: 0 16px 12px 16px; flex-wrap: wrap; align-items: center; }
+.compare-sidebar .compare-datapoint { flex: 1 1 auto; min-width: 160px; }
+.compare-sidebar .compare-max-note { flex: 0 0 auto; margin-left: 4px; }
+.compare-sidebar .compare-action, .compare-sidebar .compare-clear { flex: 0 0 auto; }
+.compare-sidebar .compare-action { min-width: 100px; }
+.compare-sidebar .compare-clear { min-width: 80px; }
+
+@media (max-width: 420px) {
+    .compare-sidebar { width: 92%; right: 4%; }
+    .compare-sidebar .compare-datapoint { min-width: 120px; }
+}
+
 .bot-section {
     display: flex;
     flex-direction: column;
