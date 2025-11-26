@@ -4,6 +4,9 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 import Select from 'react-select';
 import './ComparisonPage.css';
 import '../../Components/searchComponents/Chart/Chart.css';
+import Navbar from '../../Components/searchComponents/Navbar/Navbar';
+import Footer from '../../Components/Footer/Footer';
+import comparisonBg from "../../assets/background.jpg";
 
 function ComparisonPage() {
   const availableProfessions = [
@@ -408,14 +411,18 @@ function ComparisonPage() {
     <div className="comparison-page">
       {/* Diagonal split background with blue and yellow */}
       <div className="comparison-background">
-        <div className="blue-half"></div>
+        <div className="nav-background"></div>
+        <div className="blue-half" style={{ backgroundImage: `url(${comparisonBg})` }}></div>
         <div className="yellow-half"></div>
+        <div className="gray-half"></div>
       </div>
 
-      <div className="comparison-main-container">
-        
-        {/* Comparison Table */}
-        <div className="comparison-table-section">
+      <div className="comparison-content">
+        <Navbar></Navbar>
+        <div className="comparison-main-container">
+          
+          {/* Comparison Table */}
+          <div className="comparison-table-section">
           <div className="table-header-label">Comparison Table</div>
           <div className="comparison-table">
             
@@ -549,7 +556,9 @@ function ComparisonPage() {
 
         </div>
       </div>
+      <Footer />
     </div>
+  </div>
   );
 }
 

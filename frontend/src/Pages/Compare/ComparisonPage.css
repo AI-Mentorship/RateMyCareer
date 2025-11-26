@@ -1,24 +1,43 @@
 @import url("https://fonts.googleapis.com/css2?family=Bangers&family=Itim&family=Inter:wght@400;700;800;900&display=swap");
 
-.comparison-page {
-  position: relative;
-  min-height: 100vh;
+body, html {
+  background-color: #E8E8E8;
+  margin: 0;
+  padding: 0;
   width: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.comparison-page {
+  width: 100%;
+  min-height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 20px;
-  overflow: hidden;
+  justify-content: flex-start;
 }
 
 /* Diagonal split background with blue and yellow */
 .comparison-background {
-  position: fixed;
+  display: flex;
+  flex-direction: column;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 1;
+}
+
+.nav-background {
+  width: 100%;
+  height: 60px;
+  background-color: rgb(80,80,112);
+  position: fixed;
+  z-index: 2;
+  left: 0;
+  top: 0;
 }
 
 .blue-half {
@@ -27,10 +46,11 @@
   left: 0;
   width: 100%;
   height: 100%;
+  margin-top: 60px;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  clip-path: polygon(0 0, 100% 0, 100% 45%, 0 55%);
+  clip-path: polygon(0 0, 100% 0, 100% 40%, 0 50%);
 }
 
 .blue-half::before {
@@ -52,12 +72,33 @@
   width: 100%;
   height: 100%;
   background: #FFD79F;
-  clip-path: polygon(0 55%, 100% 45%, 100% 100%, 0 100%);
+  clip-path: polygon(0 50%, 100% 40%, 100% 85%, 0 75%);
+}
+
+.comparison-content {
+    position: absolute;
+    left: 195px;
+    right: 195px;
+    top: 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.gray-half {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #E8E8E8;
+  clip-path: polygon(0 75%, 100% 85%, 100% 100%, 0 100%);
 }
 
 .comparison-main-container {
+  margin-top: 40px;
+  margin-bottom: 150px;
   position: relative;
-  z-index: 10;
   display: grid;
   grid-template-columns: 450px 550px;
   gap: 20px;
@@ -68,7 +109,7 @@
 /* Comparison table styling */
 .comparison-table-section {
   background: white;
-  border-radius: 25px;
+  border-radius: 0;
   padding: 20px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
   display: flex;
@@ -212,7 +253,7 @@
 /* Sentiment trend graph styling*/
 .sentiment-graph-section {
   background: white;
-  border-radius: 25px;
+  border-radius: 0;
   padding: 25px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
   display: flex;
