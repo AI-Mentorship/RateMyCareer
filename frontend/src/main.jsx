@@ -1,19 +1,12 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './index.css'
+// install global fetch wrapper to emit loading events for API calls
+import './utils/fetchWrapper'
 import App from './App.jsx'
-import ProfessionPage from './ProfessionPage.jsx'
-import ComparisonPage from './ComparisonPage.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="/profession/:professionName" element={<ProfessionPage />} />
-        <Route path="/comparison" element={<ComparisonPage />} />
-      </Routes>
-    </BrowserRouter>
+    <App />
   </StrictMode>,
 )

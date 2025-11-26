@@ -1,0 +1,42 @@
+/* Full-screen loading overlay */
+.app-loading-overlay{
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  pointer-events: none;
+}
+.overlay-backdrop{
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.25);
+  backdrop-filter: blur(2px);
+}
+.overlay-content{
+  position: relative;
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 24px;
+  background: rgba(255,255,255,0.95);
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+}
+.spinner{
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 4px solid #e6e6e6;
+  border-top-color: #3975F8;
+  animation: spin 1s linear infinite;
+}
+.overlay-text{
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  color: #333;
+}
+@keyframes spin{ to { transform: rotate(360deg) } }

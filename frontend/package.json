@@ -15,7 +15,8 @@
     "@fortawesome/react-fontawesome": "^3.1.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "react-router-dom": "^7.9.4",
+    "react-router": "^7.9.5",
+    "react-router-dom": "^7.9.5",
     "react-select": "^5.10.2",
     "recharts": "^3.3.0"
   },
