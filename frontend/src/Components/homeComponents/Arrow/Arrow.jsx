@@ -2,7 +2,7 @@ import './Arrow.css'
 
 function Arrow () {
     function handleScroll(){
-        const target = document.getElementById("secondSection"); 
+        const target = document.getElementById("target"); 
         target.scrollIntoView({ behavior: "smooth" });
     }
 

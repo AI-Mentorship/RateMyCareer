@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>RateMyCareer - API Test (Teachers)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <style>
+        body { font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; padding: 24px; color:#222 }
+        h1 { margin-bottom: 6px }
+        .grid { display: grid; grid-template-columns: 1fr 360px; gap: 20px; align-items: start }
+        .card { background: #fff; border: 1px solid #e6e6e6; padding: 16px; border-radius:8px }
+        #chartContainer { height: 320px }
+        table { width:100%; border-collapse: collapse }
+        th, td { padding:8px 6px; border-bottom:1px solid #eee; text-align:left }
+        .muted { color:#666; font-size:13px }
+        .small { font-size:13px }
+        #rankingsList { max-height:360px; overflow:auto }
+        button { padding:8px 12px; border-radius:6px; border:1px solid #ddd; background:#f6f6f6 }
+    </style>
+</head>
+<body>
+
+        <h1>RateMyCareer - API Test (Teachers)</h1>
+    <p class="muted">This page demonstrates the API endpoints using the <strong>Teachers</strong> profession.</p>
+
+    <div style="margin:10px 0 18px">
+        <button id="refreshBtn">Refresh all</button>
+        <span class="muted" style="margin-left:12px">API base: <code id="apiBase">http://127.0.0.1:8000</code></span>
+    </div>
+
+    <div class="grid">
+        <div>
+            <div class="card">
+                <h3>Timeline (combined forecast + aggregate)</h3>
+                <div id="chartContainer"><canvas id="timelineChart" width="800" height="320"></canvas></div>
+                <p class="small muted">Blue = forecast points, Green = aggregate points (aggregate wins on date collisions).</p>
+            </div>
+
+            <div class="card" style="margin-top:16px">
+                <h3>Scores (Teachers)</h3>
+                <div id="scoresArea">Loading...</div>
+            </div>
+        </div>
+
+        <div>
+            <div class="card">
+                <h3>Top Rankings</h3>
+                <div id="rankingsList">Loading...</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const API_BASE = (document.getElementById('apiBase') || {}).textContent || 'http://127.0.0.1:8000';
+        const CAREER = 'Teachers';
+
+        async function fetchJson(path) {
+            const url = `${API_BASE}${path}`;
+            const res = await fetch(url);
+            if (!res.ok) throw new Error(`${res.status} ${res.statusText} when fetching ${url}`);
+            return res.json();
+        }
+
+        // Timeline chart
+        let timelineChart = null;
+        function renderTimeline(dates, values, pointStyles) {
+            const ctx = document.getElementById('timelineChart').getContext('2d');
+            if (timelineChart) timelineChart.destroy();
+            timelineChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: dates,
+                    datasets: [{
+                        label: 'Sentiment value',
+                        data: values,
+                        borderColor: '#0b84ff',
+                        backgroundColor: 'rgba(11,132,255,0.12)',
+                        tension: 0.15,
+                        pointRadius: 4,
+                        pointBackgroundColor: pointStyles,
+                        spanGaps: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: { x: { display: true }, y: { display: true, suggestedMin: -1, suggestedMax: 1 } }
+                }
+            });
+        }
+
+        function renderScores(rows) {
+            const container = document.getElementById('scoresArea');
+            if (!rows || rows.length === 0) { container.innerHTML = '<div class="muted">No score rows found.</div>'; return; }
+            // show latest row
+            const latest = rows[0];
+            const html = `
+                <table>
+                    <tr><th>Record date</th><td>${latest.record_date || latest.recordDate || ''}</td></tr>
+                    <tr><th>avg_sentiment</th><td>${Number(latest.avg_sentiment || latest.avgSentiment || 0).toFixed(3)}</td></tr>
+                      <tr><th>forecasted_sentiment_avg</th><td>${latest.forecasted_sentiment_avg == null ? '-' : Number(latest.forecasted_sentiment_avg).toFixed(3)}</td></tr>
+                      <tr><th>vibe_score</th><td>${latest.vibe_score == null ? '-' : Number(latest.vibe_score).toFixed(3)}</td></tr>
+                      <tr><th>sentiment_volatility</th><td>${latest.sentiment_volatility == null ? '-' : Number(latest.sentiment_volatility).toFixed(3)}</td></tr>
+                      <tr><th>regret_ratio</th><td>${latest.regret_ratio == null ? '-' : Number(latest.regret_ratio).toFixed(3)}</td></tr>
+                </table>
+            `;
+            container.innerHTML = html;
+        }
+
+        function renderRankings(list) {
+            const container = document.getElementById('rankingsList');
+            if (!list || list.length === 0) { container.innerHTML = '<div class="muted">No rankings found.</div>'; return; }
+            let html = '<table><thead><tr><th>Rank</th><th>Career</th><th>Vibe</th><th>Date</th></tr></thead><tbody>';
+            list.forEach((r, i) => {
+            html += `<tr><td>${i+1}</td><td>${r.career_name}</td><td>${r.vibe_score==null? '-' : Number(r.vibe_score).toFixed(3)}</td><td>${r.record_date||''}</td></tr>`;
+            });
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        async function loadAll() {
+            try {
+                // timeline
+                const t = await fetchJson(`/api/timeline?career=${encodeURIComponent(CAREER)}&include_aggregate=true&include_forecast=true`);
+                const timeline = t.timeline || [];
+                const dates = timeline.map(p => p.date);
+                const values = timeline.map(p => p.value == null ? null : Number(p.value));
+                const pointStyles = timeline.map(p => p.source === 'aggregate' ? '#16a34a' : '#0b84ff');
+                renderTimeline(dates, values, pointStyles);
+
+                // scores
+                const s = await fetchJson(`/api/scores?career=${encodeURIComponent(CAREER)}`);
+                renderScores(s.rows || s.data || []);
+
+                // rankings
+                const r = await fetchJson(`/api/rankings?limit=10`);
+                renderRankings(r.data || []);
+
+            } catch (err) {
+                console.error('Error loading data', err);
+                alert('Error loading data: ' + err.message + '\nMake sure backend is running on ' + API_BASE);
+            }
+        }
+
+        document.getElementById('refreshBtn').addEventListener('click', loadAll);
+
+        // auto load on open
+        window.addEventListener('load', loadAll);
+    </script>
+
+</body>
+</html>

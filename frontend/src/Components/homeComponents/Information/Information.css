@@ -1,0 +1,64 @@
+@import url("https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;800;900&display=swap");
+.information-container {
+    height: 350px;
+    width: 120%;
+    position: relative;
+    margin-top: 70px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-left: -70px;
+    background-color: white;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.information-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.information-pilot {
+    width: 80px;
+    height: 120px;
+    border-radius: 40px;
+    position: absolute;
+    top: 45px;
+    left: 60%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    /* transition: transform 0.3s ease, box-shadow 0.3s ease; */
+}
+
+.image-container {
+    position: relative;
+    width: 700px;
+}
+.information-plane {
+    width: 100%;
+    height: 300px;
+}
+.information-header {
+    font-family: 'Bangers', cursive;
+    text-align: center;
+    font-size: 25px;
+
+}
+.information-subheader {
+    font-family: 'Inter', sans-serif;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.info-content {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    gap: 20px;
+    font-family: 'Inter', sans-serif;
+    margin-right: 20px;
+}
+
+.highlight {
+    color:  #3975F8;
+}

@@ -39,7 +39,7 @@ const options = [
             boxShadow: 'none',
             backgroundColor: 'rgba(255,255,255,0)',
             fontFamily: "Arial, Helvetica, sans-serif",
-            width: '500px',
+            width: '470px',
             cursor: 'pointer',
         }),
         valueContainer: (provided) => ({
@@ -50,7 +50,7 @@ const options = [
         dropdownIndicator: () => ({ display: 'none' }),
         menu: (provided) => ({
             ...provided,
-            width: '576px',
+            width: '530px',
             fontFamily: "'Inter', sans-serif",
         }),
     };
@@ -64,7 +64,7 @@ const options = [
                 value={selectedOption}
                 onChange={(opt) => setSelectedOption(opt)}
             />
-            <button className="search-button" onClick={handleSearch}>SEARCH</button>
+        <button className="search-button" onClick={handleSearch}>SEARCH</button>
         </div>
     )
 }

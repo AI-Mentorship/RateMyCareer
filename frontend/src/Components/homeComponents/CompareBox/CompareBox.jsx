@@ -1,18 +1,23 @@
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import './CompareBox.css'
 import Select from 'react-select'
 
 function CompareBox() {
+    const navigate = useNavigate()
+    const [first, setFirst] = useState(null)
+    const [second, setSecond] = useState(null)
+
     const options = [
-        { value: "dataScienetist", label: "Data Scientist" },
-        { value: "management", label: "HR / Management" },
-        { value: "physicalTherapist", label: "Physical Therapist" },
-        { value: "teacher", label: "Teacher" },
-        { value: "lawyer", label: "Lawyer" },
         { value: "police", label: "Police" },
-        { value: "ux", label: "UX" },
-        { value: "dataAnalyst", label: "Data Analyst" },
-        { value: "graphicDesign", label: "Graphic Design" },
-        { value: "csCareer", label: "CS Career" },
+        { value: "humanresources", label: "HR" },
+        { value: "Teachers", label: "Teacher" },
+        { value: "nursing", label: "Nurse" },
+        { value: "physicaltherapy", label: "Physical Therapy" },
+        { value: "Lawyertalk", label: "Lawyer" },
+        { value: "DataScienceJobs", label: "Data Scientist" },
+        { value: "dataanalytics", label: "Data Analyst" },
+        { value: "UXResearch", label: "UX Designer" },
     ];
 
     const customStyles = {
@@ -25,7 +30,7 @@ function CompareBox() {
             ...provided,
             borderRadius: "30px",
             backgroundColor: "white",
-            width: "400px",
+            width: "100%",
             fontSize: "15px",
             boxShadow: "0 10px 30px rgba(0, 0, 0, 0.2)",
             textAlign: "left",
@@ -40,7 +45,7 @@ function CompareBox() {
         dropdownIndicator: () => ({ display: 'none' }),
         menu: (provided) => ({
             ...provided,
-            width: '400px',
+            width: '100%',
             fontFamily: "Arial, Helvetica, sans-serif;",
             fontSize: "15px",
             textAlign: "left",
@@ -48,7 +53,6 @@ function CompareBox() {
     };
 
     return (
-        <div className="compare-container">
             <div className="compare-main">
                 <h2>Compare</h2>
                 <p>"Wanna know detailed comparisons between 2 Professions."</p>
@@ -59,6 +63,9 @@ function CompareBox() {
                         options={options}
                         styles={customStyles}
                         placeholder="Select a profession..."
+                        value={first}
+                        onChange={setFirst}
+                        isClearable
                     />
                     <h4 className="second-prof">SECOND PROFESSION</h4>
                     <Select
@@ -66,11 +73,18 @@ function CompareBox() {
                         options={options}
                         styles={customStyles}
                         placeholder="Select a profession..."
+                        value={second}
+                        onChange={setSecond}
+                        isClearable
                     />
                 </div>
-                <button className="compare">GO!!</button>
+                <button className="compare" onClick={() => {
+                    // require at least one selected profession
+                    if(!first && !second) return
+                    const payload = { compare: [first ? { value: first.value, label: first.label } : null, second ? { value: second.value, label: second.label } : null].filter(Boolean) }
+                    navigate('/compare', { state: payload })
+                }}>GO!!</button>
             </div>
-        </div>
     )
 }
 

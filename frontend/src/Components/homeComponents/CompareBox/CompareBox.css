@@ -1,18 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;800;900&display=swap");
-
-.compare-container {
-    display: flex;
-    flex-direction: column;
-    margin-left: 50px;
-}
-
 .compare-main {
     display: flex;
     flex-direction: column;
     text-align: center;
     margin-top: 10px;
     height: 470px;
-    width: 450px;
+    width: 100%;
     background-color: #fffbfb;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -51,7 +44,7 @@ h2 {
 
 .compare {
     margin-top: 15px;
-    margin-left: 150px;
+    margin-left: 38%;
     height: 38px;
     width: 150px;
     background-color: #3975F8;  

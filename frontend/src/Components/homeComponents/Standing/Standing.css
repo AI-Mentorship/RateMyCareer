@@ -3,7 +3,7 @@
 .standing {
     display: flex;
     flex-direction: column;
-    width: 450px;
+    width: 100%;
     height: 470px;
     background-color: #fffbfb;
     margin-right: 60px;
