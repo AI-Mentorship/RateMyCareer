@@ -16,6 +16,7 @@ function Profession(){
     const [score, setScore] = useState(null)
     const [summary, setSummary] = useState(null)
     const [quotesList, setQuotesList] = useState([])
+    const [tags, setTags] = useState([])
     const [effectiveCareer, setEffectiveCareer] = useState(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
@@ -166,6 +167,15 @@ function Profession(){
                     setSummary(null)
                 }
 
+                // Fetch tags
+                try {
+                    const tagsData = await localData.getTags(result.name || career)
+                    setTags(tagsData)
+                } catch (e) {
+                    console.info('Could not fetch tags', e)
+                    setTags([])
+                }
+
                 // Fetch quotes for the career and pass to the Quote component
                 try{
                     const qJson = await localData.getQuotes(result.name || career, 5, true)
@@ -236,12 +246,12 @@ function Profession(){
                 <div className="watchout-column">
                     <h1>Common Tags</h1>
                     <div className="tags-grid">
-                        <span className="tag tag-negative">Stressful</span>
-                        <span className="tag tag-negative">Work Life Balance</span>
-                        <span className="tag tag-positive">Good Salary</span>
-                        <span className="tag tag-negative">Toxic Culture</span>
-                        <span className="tag tag-negative">Limited Growth</span>
-                        <span className="tag tag-positive">Job Security</span>
+                        {tags.map((tag, i) => (
+                            <span key={i} className={`tag ${tag.type}`}>
+                                {tag.label}
+                            </span>
+                        ))}
+                        {tags.length === 0 && <span style={{color:'#666', fontStyle:'italic'}}>No tags available</span>}
                     </div>
                 </div>
             </div>

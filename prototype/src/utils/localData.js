@@ -254,6 +254,94 @@ export const localData = {
         }
         
         return { career: canonical, rows: rows.slice(0, limit) };
+    },
+
+    async getTags(careerName) {
+        const data = await loadData();
+        const canonical = findCanonicalCareer(data, careerName);
+        const warnings = data.warning || [];
+
+        // Get career specific warnings
+        // Need to map canonical career name to subreddit name used in warning table
+        let subName = canonical;
+        if (data.subreddits) {
+            const sub = data.subreddits.find(s => normalize(s.career_name) === normalize(canonical));
+            if (sub) subName = sub.display_name;
+        }
+
+        const careerWarnings = warnings.filter(w => normalize(w.subreddit) === normalize(subName));
+        
+        // Calculate average score for this specific subreddit (career)
+        let sum = 0;
+        let count = 0;
+        careerWarnings.forEach(w => {
+            sum += w.value;
+            count++;
+        });
+        
+        // Threshold is the average score of this subreddit across all its categories
+        const threshold = count > 0 ? (sum / count) : 0;
+
+        // Map DB categories to UI tags
+        const tags = [];
+        
+        // Helper to add tag if condition met
+        // Compare value against the career-specific threshold
+        const checkAndAdd = (dbCategory, uiLabel, isPositiveIfHigh, isPositiveIfLow) => {
+            const w = careerWarnings.find(x => x.category === dbCategory);
+            if (!w) return;
+            
+            const val = w.value;
+            
+            if (isPositiveIfHigh) {
+                if (val > threshold) tags.push({ label: uiLabel, type: 'tag-positive' });
+                else if (isPositiveIfLow === false) tags.push({ label: uiLabel, type: 'tag-negative' }); 
+            } else if (isPositiveIfLow) {
+                if (val < threshold) tags.push({ label: uiLabel, type: 'tag-positive' });
+                else tags.push({ label: uiLabel, type: 'tag-negative' });
+            }
+        };
+
+        // "Stressful" / "Work Life Balance" -> Workload & Operations
+        // High workload value (assuming 5 is good/manageable) -> Good WLB
+        // Low workload value -> Stressful
+        const wlo = careerWarnings.find(x => x.category === "Workload & Operations");
+        if (wlo) {
+            if (wlo.value < threshold) tags.push({ label: "Stressful", type: "tag-negative" });
+            else tags.push({ label: "Work Life Balance", type: "tag-positive" });
+        }
+
+        // "Good Salary" -> Compensation & Benefits
+        const comp = careerWarnings.find(x => x.category === "Compensation & Benefits");
+        if (comp) {
+            if (comp.value > threshold) tags.push({ label: "Good Salary", type: "tag-positive" });
+            // else tags.push({ label: "Low Salary", type: "tag-negative" });
+        }
+
+        // "Toxic Culture" -> Work Culture & Environment
+        // Assuming high value is Good Culture, low is Toxic
+        const cult = careerWarnings.find(x => x.category === "Work Culture & Environment");
+        if (cult) {
+            if (cult.value < threshold) tags.push({ label: "Toxic Culture", type: "tag-negative" });
+            else tags.push({ label: "Good Culture", type: "tag-positive" });
+        }
+
+        // "Limited Growth" -> Career Growth & Development
+        // High value = Good growth
+        const growth = careerWarnings.find(x => x.category === "Career Growth & Development");
+        if (growth) {
+            if (growth.value < threshold) tags.push({ label: "Limited Growth", type: "tag-negative" });
+            else tags.push({ label: "Good Growth", type: "tag-positive" });
+        }
+
+        // "Job Security" -> Job Security & Stability
+        const sec = careerWarnings.find(x => x.category === "Job Security & Stability");
+        if (sec) {
+            if (sec.value > threshold) tags.push({ label: "Job Security", type: "tag-positive" });
+            else tags.push({ label: "Low Job Security", type: "tag-negative" });
+        }
+
+        return tags;
     }
 };
 
