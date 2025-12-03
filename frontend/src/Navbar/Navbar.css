@@ -5,9 +5,10 @@
     flex-direction: row;
     justify-content: space-between;  
     top: 0;
+    left: 195px;
+    right: 195px;
     z-index: 10;
     position: fixed;
-    width: 80%;
     align-items: center;
     height: 60px;
 }

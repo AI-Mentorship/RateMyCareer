@@ -1,5 +1,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Bangers&family=Itim&family=Inter:wght@400;700;800;900&display=swap");
 
+
+html {
+  scrollbar-gutter: stable;
+}
+
+body {
+  overflow-x: hidden;
+}
+
 body, html {
   background-color: #E8E8E8;
   margin: 0;
@@ -31,7 +40,7 @@ body, html {
 }
 
 .nav-background {
-  width: 100%;
+  width: 100vw;
   height: 60px;
   background-color: rgb(80,80,112);
   position: fixed;
@@ -44,7 +53,7 @@ body, html {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 100vw;
   height: 100%;
   margin-top: 60px;
   background-size: cover;
@@ -58,7 +67,7 @@ body, html {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 100vw;
   height: 100%;
   background: linear-gradient(to right, rgba(80,152,240,0.6), rgba(79,164,186,0.6), rgba(61,136,166,0.6));
   backdrop-filter: blur(6px);
@@ -69,7 +78,7 @@ body, html {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 100vw;
   height: 100%;
   background: #FFD79F;
   clip-path: polygon(0 50%, 100% 40%, 100% 85%, 0 75%);
@@ -89,7 +98,7 @@ body, html {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 100vw;
   height: 100%;
   background: #E8E8E8;
   clip-path: polygon(0 75%, 100% 85%, 100% 100%, 0 100%);
@@ -104,6 +113,8 @@ body, html {
   gap: 20px;
   max-width: 1050px;
   width: 100%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Comparison table styling */

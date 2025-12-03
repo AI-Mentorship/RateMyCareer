@@ -4,7 +4,7 @@ import CompareBox from '../../Components/homeComponents/CompareBox/CompareBox.js
 import Standing from '../../Components/homeComponents/Standing/Standing.jsx'
 import Arrow from '../../Components/homeComponents/Arrow/Arrow.jsx'
 import image1 from '../../assets/background1.jpg'
-
+import Footer from '../../Components/Footer/Footer';
 
 function Homepage() {
     return (
@@ -30,6 +30,7 @@ function Homepage() {
               </div>
             </div>
           </div>
+          <Footer />
         </div>
     )
 }

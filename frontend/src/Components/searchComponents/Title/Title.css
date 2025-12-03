@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bangers&family=Itim&family=Inter:wght@400;700;800;900&display=swap");
 
 .title-container {
     display: flex;
@@ -6,23 +6,86 @@
     margin-top: 0px;
     margin-left: 60px;
     gap: 20px;
-    font-family: "Bangers",cursive;
+    font-family: "Bangers", cursive;
     color: white;
 }
 
-.bigger {
-    font-size: 100px;
+.title-header {
+    margin-bottom: 10px;
 }
 
-.smaller {
-    font-size: 40px;
+.profession-name {
+    font-family: 'Bangers', cursive;
+    font-size: 65px;
+    color: #FFFFFF;
+    margin: 0;
+    margin-bottom: 5px;
+    letter-spacing: 1px;
 }
 
-.name {
-    font-size: 50px;
-    margin-top: -55px;
+.profession-meta {
+    font-family: 'Itim', cursive;
+    font-size: 14px;
+    color: #FFFFFF;
+    margin: 0;
+    opacity: 0.9;
 }
 
-.breakdown {
-    margin-top: -25px;
+.metrics-row {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.metric-box {
+    background-color: #FFFFFF;
+    border: 2px solid #000000;
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.vibe-box {
+    flex: 1.8;
+    padding: 35px 30px;
+}
+
+.vibe-box .metric-value {
+    font-size: 50px;  
+}
+
+.vibe-box .metric-label {
+    font-size: 16px; 
+}
+
+.metric-box:not(.vibe-box) {
+    padding: 20px;
+}
+
+.metric-label {
+    font-family: 'Itim', cursive;
+    font-size: 14px;
+    color: #333333;
+    margin: 0 0 8px 0;
+    font-weight: normal;
+}
+
+.metric-value {
+    font-family: 'Bangers', cursive;
+    font-size: 36px;
+    color: #000000;
+    margin: 0 0 5px 0;
+    letter-spacing: 1px;
+}
+
+.metric-description {
+    font-family: 'Itim', cursive;
+    font-size: 16px;
+    color: #666666;
+    margin: 0;
 }

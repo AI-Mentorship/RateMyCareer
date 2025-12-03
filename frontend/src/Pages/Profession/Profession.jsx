@@ -7,6 +7,7 @@ import Navbar from '../../Components/searchComponents/Navbar/Navbar'
 import Chart from '../../Components/searchComponents/Chart/Chart'
 import Quote from '../../Components/searchComponents/Quote/Quote'
 import Title from '../../Components/searchComponents/Title/Title'
+import Footer from '../../Components/Footer/Footer';
 
 
 function Profession(){
@@ -220,9 +221,9 @@ function Profession(){
                 {/* Title receives the selected career and computed values */}
                 <Title name={careerLabel || effectiveCareer || career} vibe={vibeToShow} breakdown={breakdown} />
 
-                <div className="top-section">
+                <div className="yellow-section-container">
+                <div className="overview-column">
                     <h1>Overview</h1>
-                    <h2>"</h2>
                     {summary ? (
                         <p>{summary}</p>
                     ) : (
@@ -231,26 +232,20 @@ function Profession(){
                         advancement opportunities. The work often involves problem-solving 
                         and can be intellectually rewarding.</p>
                     )}
-
-                    {/* injected API stats - keep class names */}
-                    {/* <div className="api-stats">
-                        {loading && <div>Loading latest data...</div>}
-                        {error && <div className="error">Error: {error}</div>}
-                        {!loading && score && (
-                            <div>
-                                <div>Latest record date: {score.record_date || score.recordDate || '—'}</div>
-                                <div>Vibe score (raw): {normalized?.vibeRaw ?? '—'}</div>
-                                <div>Vibe (0-100): {vibeToShow}</div>
-                                <div>Average sentiment (raw): {normalized?.avg_sent ?? '—'}</div>
-                                <div>Forecasted sentiment (raw): {normalized?.forecasted_avg ?? '—'}</div>
-                                <div>Breakdown: {breakdown}</div>
-                                <div style={{marginTop:8, fontSize:12, color:'#666'}}>Full score object (debug):</div>
-                                <pre style={{whiteSpace:'pre-wrap', fontSize:11, maxHeight:180, overflow:'auto'}}>{JSON.stringify(normalized?.raw, null, 2)}</pre>
-                            </div>
-                        )}
-                        {!loading && !score && <div>No score data available</div>}
-                    </div> */}
                 </div>
+                
+                <div className="watchout-column">
+                    <h1>Common Tags</h1>
+                    <div className="tags-grid">
+                        <span className="tag tag-negative">Stressful</span>
+                        <span className="tag tag-negative">Work Life Balance</span>
+                        <span className="tag tag-positive">Good Salary</span>
+                        <span className="tag tag-negative">Toxic Culture</span>
+                        <span className="tag tag-negative">Limited Growth</span>
+                        <span className="tag tag-positive">Job Security</span>
+                    </div>
+                </div>
+            </div>
                 <div className="mid-section">
                     <div style={{ position: 'relative', width: '100%' }}>
                         <button className="chart-compare-toggle" onClick={() => setCompareOpen(v => !v)} title="Compare">▶</button>
@@ -351,6 +346,7 @@ function Profession(){
                     <Quote quotes={quotesList}></Quote>
                 </div>
             </div>
+            <Footer />
        </div>
     )
 }
