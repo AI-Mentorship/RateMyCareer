@@ -34,42 +34,53 @@ TOPIC_CATEGORIES = {
         'salary', 'pay', 'wage', 'income', 'compensation', 'bonus', 'raise', 'commission', 
         'equity', 'stock options', 'rsu', '401k', 'pension', 'benefits', 'insurance', 
         'health', 'dental', 'vision', 'pto', 'vacation', 'sick leave', 'parental leave', 
-        'maternity leave', 'paternity leave', 'severance', 'reimbursement', 'stipend'
+        'maternity leave', 'paternity leave', 'severance', 'reimbursement', 'stipend',
+        'union', 'dues', 'paycheck', 'unpaid'
     ],
     'Management & Leadership': [
         'boss', 'manager', 'supervisor', 'lead', 'director', 'executive', 'ceo', 'cto', 
         'cfo', 'vp', 'leadership', 'management', 'micromanagement', 'micromanager', 
-        'owner', 'founder', 'admin', 'administration', 'upper management'
+        'owner', 'founder', 'admin', 'administration', 'upper management',
+        'principal', 'superintendent', 'district', 'school board', 'board of', 'board member', 'head of', 'chief'
     ],
     'Work Culture & Environment': [
         'culture', 'environment', 'atmosphere', 'vibe', 'toxic', 'toxicity', 'stress', 
         'burnout', 'pressure', 'politics', 'drama', 'harassment', 'discrimination', 
         'racism', 'sexism', 'diversity', 'inclusion', 'remote', 'wfh', 'hybrid', 
-        'office', 'flexible', 'flexibility', 'work-life balance', 'balance', 'morale'
+        'office', 'flexible', 'flexibility', 'work-life balance', 'balance', 'morale',
+        'respect', 'disrespect', 'valued', 'appreciated', 'bullying', 'safety', 'safe', 'unsafe', 'support', 'unsupported'
     ],
     'Career Growth & Development': [
         'promotion', 'promote', 'growth', 'career path', 'ladder', 'advancement', 
         'training', 'learning', 'development', 'mentor', 'mentorship', 'skill', 
-        'upskill', 'certification', 'review', 'performance', 'feedback', 'goal', 'objective'
+        'upskill', 'certification', 'review', 'performance', 'feedback', 'goal', 'objective',
+        'exam', 'test', 'licensing', 'license', 'exams', 'tests'
     ],
     'Hiring & Onboarding': [
         'interview', 'recruiter', 'hr', 'human resources', 'hiring', 'application', 
         'apply', 'resume', 'cv', 'offer', 'negotiation', 'onboarding', 'orientation', 
-        'background check', 'referral', 'candidate', 'process', 'job description'
+        'background check', 'referral', 'candidate', 'process', 'job description',
+        'hired', 'job offer', 'job hunt', 'job search', 'rejection', 'accepted', 'start date', 
+        'new job', 'leaving', 'quit', 'resigned', 'resignation', 'notice'
     ],
     'Workload & Operations': [
         'workload', 'hours', 'overtime', 'shift', 'schedule', 'deadline', 'meeting', 
         'project', 'task', 'bandwidth', 'capacity', 'busy', 'slow', 'crunch', 'sprint', 
-        'agile', 'scrum', 'process', 'workflow', 'tools', 'software', 'hardware', 'equipment'
+        'agile', 'scrum', 'process', 'workflow', 'tools', 'software', 'hardware', 'equipment',
+        'paperwork', 'email', 'emails', 'admin work', 'duties', 'responsibilities', 
+        'teaching', 'grading', 'planning', 'lesson', 'curriculum', 'classroom', 
+        'rounds', 'patient', 'client', 'customer', 'student', 'parent',
+        'students', 'parents', 'patients', 'clients', 'customers', 'classes', 'schools', 'teach'
     ],
     'Job Security & Stability': [
         'layoff', 'laid off', 'firing', 'fired', 'termination', 'let go', 'redundancy', 
         'restructure', 'reorganization', 'stable', 'stability', 'secure', 'security', 
-        'contract', 'temp', 'freelance', 'gig'
+        'contract', 'temp', 'freelance', 'gig', 'unemployed', 'unemployment'
     ],
     'Team & Colleagues': [
         'team', 'coworker', 'colleague', 'peer', 'partner', 'staff', 'employee', 
-        'people', 'social', 'collaboration', 'collaborative', 'support', 'supportive', 'clique'
+        'people', 'social', 'collaboration', 'collaborative', 'support', 'supportive', 'clique',
+        'nurse', 'nurses', 'doctor', 'doctors', 'teacher', 'teachers'
     ]
 }
 
@@ -173,6 +184,12 @@ KEYWORD_CONSTRAINTS = {
     },
     'sick leave': {
         'excluded_words': ['sub', 'substitute', 'cover', 'covering']
+    },
+    'boss': {
+        'excluded_words': ['final', 'level', 'game']
+    },
+    'vacation': {
+        'excluded_words': ['student', 'students', 'kid', 'kids', 'child', 'children']
     }
 }
 
@@ -647,7 +664,7 @@ def analyze_subreddit_by_keywords(subreddit_id: str,
     for k in all_keywords:
         # use word boundaries for alphanumeric keywords; allow phrases as simple substring
         if re.match(r"^[a-z0-9_]+$", k):
-            pat = re.compile(r"\\b" + re.escape(k) + r"\\b")
+            pat = re.compile(r"\b" + re.escape(k) + r"\b")
         else:
             pat = re.compile(re.escape(k))
         kw_patterns.append((k, pat))
@@ -655,6 +672,7 @@ def analyze_subreddit_by_keywords(subreddit_id: str,
     category_sentiments = defaultdict(list) # category -> list of (score, snippet)
     # per-submission matches: list of dicts {submission_id, matched_keywords, submission_score, snippet}
     submission_matches = []
+    rejected_submissions = []
 
     # We need submission ids; texts may be tuples (submission_id, content) or strings.
     # Normalize inputs: allow texts to be list of dicts with 'submission_id' and 'content'
@@ -729,12 +747,27 @@ def analyze_subreddit_by_keywords(subreddit_id: str,
                 'submission_score': (mean(submission_scores) if submission_scores else None),
                 'snippet': snippet_text
             })
+        else:
+            rejected_submissions.append({
+                'submission_id': sid,
+                'content': content
+            })
 
     topics_out = []
     for cat, items in category_sentiments.items():
         scores = [x[0] for x in items]
-        # Pick a few random or first examples
-        examples = [x[1] for x in items[:3]]
+        
+        # Sort by score to find min (lowest) and max (highest)
+        sorted_items = sorted(items, key=lambda x: x[0])
+        examples = []
+        if sorted_items:
+            # Add lowest score snippet
+            low = sorted_items[0]
+            examples.append({'snippet': low[1], 'score': low[0], 'type': 'lowest'})
+            # Add highest score snippet if we have more than one item
+            if len(sorted_items) > 1:
+                high = sorted_items[-1]
+                examples.append({'snippet': high[1], 'score': high[0], 'type': 'highest'})
         
         if len(scores) >= min_mentions:
             topics_out.append({'topic': cat, 'avg_score': mean(scores), 'mentions': len(scores), 'examples': examples})
@@ -744,7 +777,7 @@ def analyze_subreddit_by_keywords(subreddit_id: str,
 
     # filter out zero-mention keywords to reduce output size
     topics_out = [t for t in topics_out if t['mentions'] > 0]
-    return {'subreddit_id': subreddit_id, 'topics': topics_out, 'submission_matches': submission_matches}
+    return {'subreddit_id': subreddit_id, 'topics': topics_out, 'submission_matches': submission_matches, 'rejected_submissions': rejected_submissions}
 
 
 def fetch_submissions_grouped(supabase, filter_subreddit: str = None, limit: int = 10000):
@@ -876,6 +909,39 @@ def write_submission_matches_csv(out_path: str, results: List[Dict[str, Any]]):
                     })
 
 
+def write_rejected_submissions_csv(out_path: str, results: List[Dict[str, Any]]):
+    fieldnames = ['subreddit_id', 'submission_id', 'content']
+    with open(out_path, 'w', newline='', encoding='utf-8') as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        for r in results:
+            sid = r.get('subreddit_id')
+            for rej in r.get('rejected_submissions', []):
+                writer.writerow({
+                    'subreddit_id': sid,
+                    'submission_id': rej.get('submission_id'),
+                    'content': rej.get('content')
+                })
+
+
+def write_samples_csv(out_path: str, results: List[Dict[str, Any]]):
+    fieldnames = ['subreddit_id', 'topic', 'type', 'score', 'snippet']
+    with open(out_path, 'w', newline='', encoding='utf-8') as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        for r in results:
+            sid = r.get('subreddit_id')
+            for t in r.get('topics', []):
+                for ex in t.get('examples', []):
+                    writer.writerow({
+                        'subreddit_id': sid,
+                        'topic': t['topic'],
+                        'type': ex.get('type', 'sample'),
+                        'score': ex.get('score', ''),
+                        'snippet': ex.get('snippet', '')
+                    })
+
+
 def main():
     parser = argparse.ArgumentParser(description='Topic + per-topic sentiment analysis grouped by subreddit')
     parser.add_argument('--subreddit', help='(optional) subreddit_id to limit to')
@@ -885,6 +951,8 @@ def main():
     parser.add_argument('--keywords-file', help='Optional newline-delimited file with extra keywords to include (one per line)')
     parser.add_argument('--out', help='Optional CSV output path')
     parser.add_argument('--submission-out', help='Optional CSV path to write per-submission matched keywords')
+    parser.add_argument('--rejected-out', help='Optional CSV path to write rejected submissions')
+    parser.add_argument('--samples-out', help='Optional CSV path to write highest/lowest sample posts')
     parser.add_argument('--limit', type=int, default=20000, help='Limit number of submissions fetched')
     parser.add_argument('--use-llm', action='store_true', help='Use Gemini LLM to verify and refine results (requires GEMINI_API_KEY)')
     args = parser.parse_args()
@@ -966,12 +1034,17 @@ def main():
         for t in r['topics']:
             if t['avg_score'] is not None:
                 print(f"- {t['topic']}: avg={t['avg_score']:.2f} stars ({t['mentions']} mentions)")
-                # Print a sample snippet if available
+                # Print sample snippets if available
                 if t.get('examples'):
-                    # Just show the first one, truncated if too long
-                    ex = t['examples'][0]
-                    if len(ex) > 100: ex = ex[:100] + "..."
-                    print(f"  Sample: \"{ex}\"")
+                    for ex_obj in t['examples']:
+                        # ex_obj is now a dict {'snippet', 'score', 'type'}
+                        label = ex_obj.get('type', 'sample').capitalize()
+                        score = ex_obj.get('score', '?')
+                        text = ex_obj.get('snippet', '')
+                        
+                        clean_ex = text.replace('\n', ' ')
+                        if len(clean_ex) > 100: clean_ex = clean_ex[:100] + "..."
+                        print(f"  {label} ({score}): \"{clean_ex}\"")
             else:
                 print(f"- {t['topic']}: no mentions found in sentences ({t['mentions']})")
 
@@ -987,6 +1060,14 @@ def main():
         sub_out = args.out + '.submissions.csv'
         logger.info(f'Writing submission matches CSV to {sub_out}')
         write_submission_matches_csv(sub_out, results)
+
+    if args.rejected_out:
+        logger.info(f'Writing rejected submissions CSV to {args.rejected_out}')
+        write_rejected_submissions_csv(args.rejected_out, results)
+
+    if args.samples_out:
+        logger.info(f'Writing samples CSV to {args.samples_out}')
+        write_samples_csv(args.samples_out, results)
 
 
 if __name__ == '__main__':

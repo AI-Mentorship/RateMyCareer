@@ -1,0 +1,173 @@
+@import url("https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;800;900&display=swap");
+
+.prof-page {
+    display: flex;
+    flex-direction: column;
+    width: 98.3vw;
+}
+.prof-background0 {
+    width: 100%;
+    height: 60px;
+    background-color: rgb(80, 80, 112);
+    position: fixed;
+    z-index: 1;
+    top: 0;
+}
+.prof-background1 {
+    margin-top: 50px;
+    position: relative;
+    width: 100%;
+    height: 300px;
+    background-image: linear-gradient(to right, rgba(80,152,240,0.6), rgba(79,164,186,0.6), rgba(61,136,166,0.6)), url('../../assets/background.jpg');
+    background-size: cover, cover;
+    background-position: center, center;
+    background-repeat: no-repeat, no-repeat;
+    clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
+
+}
+
+.prof-background1::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    backdrop-filter: blur(8px);
+}
+.prof-background2 {
+    margin-top: -100px;
+    height: 495px;
+    background-color: #FFD79F;
+}
+
+.prof-background3 {
+    margin-top: -100px;
+    height: 400px;
+    width: 100%;
+    background-color: #F5F5F5;
+    clip-path: polygon(0 0, 100% 18%, 100% 80%, 0 100%);
+}
+
+.prof-background4 {
+    margin-top: -120px;
+    height: 530px;
+    background-color: #D9D9D9;
+    clip-path: polygon(0, 100% 0, 100% 100%, 0 100%);
+}
+
+.prof-content {
+    position: absolute;
+    left: 195px;
+    right: 195px;
+    top: 70px;
+    display: flex;
+    flex-direction: column;
+}
+
+.top-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.top-section h1 {
+    margin-top: 90px;
+    font-size: 50px;
+    font-family: "Bangers",cursive;
+    color: #2d3748;
+}
+
+.top-section h2 {
+    margin-top: -20px;
+    font-size: 100px;
+    font-family: "Bangers",cursive;
+    color: #2d3748;
+}
+.top-section p {
+    width: 800px;
+    font-size: 18px;
+    margin-top: -110px;
+    font-family: 'Inter', sans-serif;
+    color: #2d3748;
+    line-height: 1.5;
+}
+
+.mid-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.chart-compare-toggle {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 36px;
+    height: 36px;
+    border-radius: 18px;
+    border: none;
+    background: rgba(0,0,0,0.12);
+    color: white;
+    cursor: pointer;
+    z-index: 30;
+}
+
+.compare-sidebar {
+    position: fixed;
+    right: -360px;
+    top: 120px;
+    width: 340px;
+    background: white;
+    border-radius: 8px 0 0 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    transition: right 220ms ease;
+    z-index: 100;
+}
+.compare-sidebar.open { right: 20px }
+
+/* layout improvements for controls inside the sidebar to avoid overflow */
+.compare-sidebar { box-sizing: border-box; padding-bottom: 12px; }
+.compare-sidebar .compare-controls { display: flex; gap: 8px; padding: 0 16px 12px 16px; flex-wrap: wrap; align-items: center; }
+.compare-sidebar .compare-datapoint { flex: 1 1 auto; min-width: 160px; }
+.compare-sidebar .compare-max-note { flex: 0 0 auto; margin-left: 4px; }
+.compare-sidebar .compare-action, .compare-sidebar .compare-clear { flex: 0 0 auto; }
+.compare-sidebar .compare-action { min-width: 100px; }
+.compare-sidebar .compare-clear { min-width: 80px; }
+
+@media (max-width: 420px) {
+    .compare-sidebar { width: 92%; right: 4%; }
+    .compare-sidebar .compare-datapoint { min-width: 120px; }
+}
+
+.bot-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.bot-section h1 {
+    margin-top: 50px;
+    font-family: "Bangers",cursive;
+}
+
+.bot-section h2 {
+    margin-top: -50px;
+    font-family: "Bangers",cursive;
+    font-size: 100px;
+}
+.bot-section p {
+    width: 800px;
+    font-size: 20px;
+    margin-top: -140px;
+}
+

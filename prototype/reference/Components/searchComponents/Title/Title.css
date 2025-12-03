@@ -1,0 +1,28 @@
+@import url("https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;800;900&display=swap");
+
+.title-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0px;
+    margin-left: 60px;
+    gap: 20px;
+    font-family: "Bangers",cursive;
+    color: white;
+}
+
+.bigger {
+    font-size: 100px;
+}
+
+.smaller {
+    font-size: 40px;
+}
+
+.name {
+    font-size: 50px;
+    margin-top: -55px;
+}
+
+.breakdown {
+    margin-top: -25px;
+}

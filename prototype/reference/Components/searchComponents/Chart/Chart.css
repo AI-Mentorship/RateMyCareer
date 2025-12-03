@@ -1,0 +1,85 @@
+@import url("https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;800;900&display=swap");
+
+.graph {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* allow child to stretch to full width */
+    align-items: stretch;
+    background: white;
+    /* make the graph container fluid but bounded */
+    width: 100%;
+    max-width: 1100px;
+    box-sizing: border-box;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* ensure there's enough vertical space for the chart */
+    min-height: 360px;
+    position: relative;
+}
+
+.graph:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.graph h1 {
+    font-size: 28px;
+    margin: 0 0 12px 0;
+    font-family: "Bangers",cursive;
+    color: #2d3748;
+}
+
+/* Mood labels that flank the median line: top = positive, bottom = negative */
+.mood-label-left {
+    position: absolute;
+    left: 4px; /* slightly more left */
+    transform: none;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 0 4px;
+    border-radius: 0;
+    /* default: transparent so top/bottom don't show pills */
+    background: transparent;
+    box-shadow: none;
+    pointer-events: none;
+    text-align: left;
+}
+
+.mood-label-top {
+    top: 20%; /* moved closer to the chart middle */
+    color: #2f855a; /* greenish for Happiness */
+}
+
+.mood-label-median {
+    top: 50%;
+    transform: translateY(-50%);
+    color: #4a5568; /* neutral color for Median */
+    background: transparent; /* remove pill background */
+    padding: 0 4px;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.mood-label-bottom {
+    bottom: 20%; /* moved closer to the chart middle */
+    color: #e53e3e; /* reddish for Frustration */
+}
+
+.recharts-wrapper {
+    /* reset custom left margin so the chart aligns with the container */
+    margin-left: 0;
+}
+
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+    stroke: #e0e0e0;
+}
+
+.recharts-tooltip-wrapper {
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
