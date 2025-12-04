@@ -17,12 +17,12 @@ function Searchbox() {
                     <p>Posts</p>
                 </div>
                 <div className="info2">
-                    <h1>30+</h1>
+                    <h1>10+</h1>
                     <p>Careers</p>
                 </div>
                 <div className="info3">
-                    <h1>30+</h1>
-                    <p>Professions</p>
+                    <h1>1</h1>
+                    <p>Vibe Score</p>
                 </div>
             </div>
         </div>

@@ -36,7 +36,7 @@
 }
 .prof-background2 {
     margin-top: -100px;
-    height: 495px;
+    height: 560px;
     background-color: #FFD79F;
 }
 
@@ -50,7 +50,7 @@
 
 .prof-background4 {
     margin-top: -120px;
-    height: 800px;
+    height: 630px;
     background-color: #D9D9D9;
     clip-path: polygon(0, 100% 0, 100% 100%, 0 100%);
 }

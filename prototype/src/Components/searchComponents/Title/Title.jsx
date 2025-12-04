@@ -6,25 +6,31 @@ function Title({ name = 'Data Analyst', vibe = 72, sentiment = null, regret = nu
         if (val == null) return '—';
         const v = Number(val);
         // Heuristic for 0-10 or 0-100 scale
-        if (v > 70 || (v > 7 && v <= 10)) return 'Positive';
+        if (v > 60 || (v > 6 && v <= 10)) return 'Positive';
         if (v < 40 || (v < 4 && v <= 10)) return 'Negative';
-        return 'Neutral';
+        return 'Mixed';
     }
 
     const getRegretDesc = (val) => {
         if (val == null) return '—';
         const v = Number(val);
-        // Heuristic for 0-1 ratio or 0-100 percent
-        if ((v > 0.5 && v <= 1) || v > 50) return 'High';
-        if ((v < 0.2 && v <= 1) || v < 20) return 'Low';
+        // Handle 0-10 scale (e.g. 6.4) vs 0-100 scale (e.g. 64)
+        // If value is small (<10), assume it's 0-10 scale and normalize to 0-100
+        const normalized = (v <= 10 && v > 1) ? v * 10 : v; // Heuristic: if between 1 and 10, treat as /10. If 0.x, treat as ratio.
+        
+        // Logic: > 50% is High, < 30% is Low
+        if (normalized > 50 || (v > 0.5 && v <= 1)) return 'High';
+        if (normalized < 30 || (v < 0.3 && v <= 1)) return 'Low';
         return 'Moderate';
     }
 
     const getVolatilityDesc = (val) => {
         if (val == null) return '—';
         const v = Number(val);
-        if ((v > 0.5 && v <= 1) || v > 50) return 'Volatile';
-        return 'Stable';
+        // 0-10 scale
+        if (v > 7) return 'High';
+        if (v < 4) return 'Stable';
+        return 'Moderate';
     }
 
     return (
