@@ -23,7 +23,7 @@ function Chart({ data, compareData, compareSeries }) {
             Object.keys(row).forEach(k => {
                 if (k === 'date') return;
                 const v = row[k];
-                if (v === null || v === undefined || Number.isNaN(Number(v))) return;
+               if (v === null || v === undefined || Number.isNaN(Number(v))) return;
                 numericVals.push(Number(v));
                 // no forecast/ isForecast flag in merged data currently, so include all in nonForecastVals
                 nonForecastVals.push(Number(v));
